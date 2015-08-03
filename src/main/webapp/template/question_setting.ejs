@@ -1,9 +1,14 @@
 				<div class="form-group" itemsn="<%=itemsn%>">
-				    <label for="question">Question</label>
-				    <textarea class="form-control" rows="3" id="question-input"><%=question%></textarea>
-				    </div>
-				    <div class="form-group" itemsn="<%=itemsn%>">
-				    <label for="question"><%=(type == 'radio' || type == 'checkbox')? 'Choice':''%></label>
+				    <label for="question"><h4>Question</h4></label>
+				    <div class="btn-group pull-right padding-bottom">
+                          <button type="button" class="btn btn-default action-wysiwyg"><i class="fa fa-pencil-square-o"></i></button>
+                          <button type="button" class="btn btn-default action-remove-item"><i class="fa fa-trash-o"></i></button>
+                        </div>
+				   <!--textarea class="form-control" rows="3" id="question-input"><%=question%></textarea-->
+				   <div style="width: 100%; height: 100px;border:1px solid #000;overflow:auto;" contenteditable="true" id="question-input"><%=question%></div>
+				   
+				    <div class="form-group padding-top" itemsn="<%=itemsn%>">
+				    <label for="question"><h4><%=(type == 'radio' || type == 'checkbox')? 'Choice':''%></h4></label>
 				    <ul id="parts" class="list-unstyled connectedSortable">
 					<%
 					for (var i=0; parts!=null && i<parts.length; i++) {
@@ -38,5 +43,4 @@
 				    }
 				    %>
 				 </div>
-				    
 				    

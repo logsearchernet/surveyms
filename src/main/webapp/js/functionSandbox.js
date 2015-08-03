@@ -8,24 +8,13 @@ $(document).ready(function(){
 	jsonData = createJsonData();
 	renderJsonData(jsonData);
 	
-	var requestDelay;
-	var proname;
 	$(document).on("keyup", "textarea#title-input" , function(e) {
 		
-		if(e.which == 13 || $(this).val() == proname)
-		      return;
 
 		   proname = $(this).val();
-
-		   window.clearTimeout(requestDelay);  
-
-		   requestDelay = window.setTimeout(function() {
-			   console.log('proname='+proname)
-			   updateTitle(proname, jsonData);
-			   renderJsonData(jsonData);
-			   
-			   $('textarea#title-input').focus().val('').val(proname);
-		   }, 500);
+		   console.log('proname='+proname)
+		   updateTitle(proname, jsonData);
+		   renderJsonData(jsonData);
 	});
 	
 	$(document).on("click", "div#title-edit" , function(e) {
@@ -53,6 +42,7 @@ $(document).ready(function(){
 		values.push('Your Option 2')
 		values.push('Your Option 3')
 		commonQuestionTemplate(itemType, values)
+		activaTab('tab_2');
 	});
 	
 	$(document).on("click", "button#questionCheckbox" , function(e) {
@@ -62,6 +52,7 @@ $(document).ready(function(){
 		values.push('Your Option 2')
 		values.push('Your Option 3')
 		commonQuestionTemplate(itemType, values)
+		activaTab('tab_2');
 	});
 	
 	$(document).on("click", "button#questionTrueFalse" , function(e) {
@@ -70,6 +61,8 @@ $(document).ready(function(){
 		values.push('True')
 		values.push('False')
 		commonQuestionTemplate(itemType, values)
+		activaTab('tab_2');
+		
 	});
 	
 	$(document).on("click", "button#questionTextbox" , function(e) {
@@ -77,6 +70,7 @@ $(document).ready(function(){
 		var values = new Array(0);
 		values.push('')
 		commonQuestionTemplate(itemType, values)
+		activaTab('tab_2');
 	});
 	
 	$(document).on("click", "div.question-box" , function(e) {
@@ -116,51 +110,31 @@ $(document).ready(function(){
 	});
 	
 	
-	var requestDelay;
-	var proname;
-	$(document).on("keyup", "textarea#question-input" , function(e) {
+	
+	$(document).on("keyup", "div#question-input" , function(e) {
 
-		
-		if(e.which == 13 || $(this).val() == proname)
-		      return;
-
-		   proname = $(this).val();
+		   var proname = $(this).html();
 		   currentItemsn = $(this).closest('.form-group').attr('itemsn');
-
-		   window.clearTimeout(requestDelay);  
-
-		   requestDelay = window.setTimeout(function() {
-			   console.log('proname='+proname)
-			   updateItem(currentItemsn, proname, jsonData);
-			   console.log(JSON.stringify(jsonData))
-			   renderJsonData(jsonData);
-			   
-			   $('#question-input').focus().val('').val(proname);
-		   }, 500);
+		   console.log('proname='+proname)
+		   updateItem(currentItemsn, proname, jsonData);
+		   console.log(JSON.stringify(jsonData))
+		   renderForm(jsonData);
 		   
 	});
 	
-	var requestDelay;
-	var proname;
 	$(document).on("keyup", "input.part-input" , function(e) {
-		if(e.which == 13 || $(this).val() == proname)
-		      return;
-
-		   proname = $(this).val();
+		   var proname = $(this).val();
 		   currentPartsn = $(this).attr('partsn');
 		   currentItemsn = $(this).closest('.form-group').attr('itemsn');
-
-		   window.clearTimeout(requestDelay);  
-
-		   requestDelay = window.setTimeout(function() {
-			   console.log('proname='+proname)
-			   updatePart(currentItemsn, currentPartsn, proname, jsonData);
-			   console.log(JSON.stringify(jsonData))
-			   renderJsonData(jsonData);
-			   
-			   $('input.part-input[partsn="'+currentPartsn+'"]').focus().val('').val(proname);
-		   }, 500);
-		   
+		   console.log('proname='+proname)
+		   updatePart(currentItemsn, currentPartsn, proname, jsonData);
+		   console.log(JSON.stringify(jsonData))
+		   renderForm(jsonData);
+	});
+	
+	$(document).on("click", "button.action-wysiwyg" , function(e) {
+		$('#myModal').modal()
+	
 	});
 	
 	    
@@ -406,6 +380,33 @@ function renderQuestionSetting(data){
 		}
 	}
 	
+	//var proname;
+	//var requestDelay;
+	/*var editor_id = 'question-input'; // ID no need #
+	if (tinymce.EditorManager.execCommand('mceRemoveEditor',true, editor_id)){
+		//tinymce.EditorManager.execCommand('mceAddEditor',true, editor_id);
+		tinymce.init({
+	        selector: "#question-input",
+	        toolbar:false,
+	        menubar : false,
+	        statusbar : false,
+	        setup: function(ed) {
+	            ed.on('keyup', function(e) {
+
+		      		   proname = ed.getContent()
+		      		   console.log('proname='+proname)
+	      			   updateItem(currentItemsn, proname, data);
+	      			   console.log(JSON.stringify(data))
+	      			   renderJsonData(data);
+	      			   
+	      			   tinymce.execCommand('mceFocus',false,editor_id);
+	      			   
+	            });
+	        }
+	    });
+		
+	}*/
+	
 }
 
 function renderForm(data){
@@ -471,6 +472,16 @@ function createPartOptionMultiple(value){
 	return part;
 }
 
+function setCursorToEnd(ele)
+{
+  var range = document.createRange();
+  var sel = window.getSelection();
+  range.setStart(ele, 1);
+  range.collapse(true);
+  sel.removeAllRanges();
+  sel.addRange(range);
+  ele.focus();
+}
 
 var uuid = (function () {
     var a = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".split("");
