@@ -1,0 +1,39 @@
+					
+					<li itemsn="<%=itemsn%>" class="question">
+						<div class="question-box">
+						<div class="form-group">
+							<label for="question"><%=question%></label>
+							<%
+							for (var i=0; parts!=null && i<parts.length; i++) {
+							%>
+							<div class="radio">
+								<label> 
+								<input type="radio" id="<%=parts[i].partsn%>" value="<%=parts[i].partsn%>" partsn="<%=parts[i].partsn%>"/> 
+								<%=parts[i].value%>
+								</label>
+							</div>
+							<%
+							} // end for
+							%>
+						</div>
+						
+						</div>
+
+						<div class="hide question-editbar btn-group">
+							<button class="btn btn-primary btn-sm action-edit-item">
+								<i class="fa fa-pencil-square-o"></i> Edit
+							</button>
+							&nbsp;&nbsp;&nbsp;&nbsp;
+							<button class="btn btn-default btn-sm action-duplicate-item">
+								<i class="fa fa-files-o"></i> Duplicate
+							</button>
+							&nbsp;&nbsp;&nbsp;&nbsp;
+							<button class="btn btn-default btn-sm action-remove-item">
+								<i class="fa fa-files-o"></i> Remove
+							</button>
+							&nbsp;&nbsp;&nbsp;&nbsp;
+							<button class="btn btn-default btn-sm action-move-item">
+								<i class="fa fa-arrows"></i> Drag
+							</button>
+						</div>
+					</li>
