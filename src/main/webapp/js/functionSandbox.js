@@ -9,8 +9,6 @@ $(document).ready(function(){
 	renderJsonData(jsonData);
 	
 	$(document).on("keyup", "textarea#title-input" , function(e) {
-		
-
 		   proname = $(this).val();
 		   console.log('proname='+proname)
 		   updateTitle(proname, jsonData);
@@ -33,6 +31,14 @@ $(document).ready(function(){
 	});
 	$(document).on("mouseout", "li.question" , function(e) {
 		$(this).find('div.question-editbar').addClass('hide');
+	});
+	
+	$(document).on("mouseover", "div.question-box" , function(e) {
+		$(this).addClass('border-dashed')
+	});
+	
+	$(document).on("mouseout", "div.question-box" , function(e) {
+		$(this).removeClass('border-dashed')
 	});
 	
 	$(document).on("click", "button#questionMultiple" , function(e) {
@@ -94,9 +100,10 @@ $(document).ready(function(){
 	
 	$(document).on("click", "button.action-remove-item" , function(e) {
 		
-		var itemsn = $(this).closest('li.question').attr('itemsn');
+		var itemsn = $(this).attr('itemsn');
 		removeItem(itemsn, jsonData);
 		renderJsonData(jsonData);
+		activaTab('tab_1');
 	});
 	
 	$(document).on("click", "button.action-edit-item" , function(e) {
@@ -137,8 +144,68 @@ $(document).ready(function(){
 	
 	});
 	
-	    
+	$(document).on("click", "button.uploadPartPhoto" , function(e) {
+	    $(this).next("input.filePartInput").trigger('click');
+	});
+	   
+	$(document).on("change", "input.filePartInput" , function(e) {
+		var partsn = $(this).attr('partsn');
+		var itemsn = $(this).closest('div.form-group').attr('itemsn');
+	    var oFReader = new FileReader();
+	    var file = this.files[0];
+	    oFReader.readAsDataURL(file);
+	    oFReader.onload = function (oFREvent) {
+	    	var imgSrc = oFREvent.target.result;
+	    	updatePartWithImg(itemsn, partsn, imgSrc, jsonData);
+	    	renderForm(jsonData);
+	    };
+	    //uploadFile(file)
+	});
+	
+	$(document).on("click", "button.uploadItemPhoto" , function(e) {
+	    $(this).next("input.fileItemInput").trigger('click');
+	});
+	   
+	
+	$(document).on("change", "input.fileItemInput" , function(e) {
+		var itemsn = $(this).attr('itemsn');
+	    var oFReader = new FileReader();
+	    var file = this.files[0];
+	    oFReader.readAsDataURL(file);
+	    oFReader.onload = function (oFREvent) {
+	    	var imgSrc = oFREvent.target.result;
+	    	updateItemWithImg(itemsn, imgSrc, jsonData);
+	    	renderForm(jsonData);
+	    };
+	});
+	$(document).on("click", "button.action-remove-item-img" , function(e) {
+		var itemsn = $(this).closest('li.question').attr('itemsn');
+		updateItemWithImg(itemsn, '', jsonData)
+		renderForm(jsonData);
+	});
+	
+	$(document).on("click", "button.action-remove-part-img" , function(e) {
+		var itemsn = $(this).closest('li.question').attr('itemsn');
+		var partsn = $(this).attr('partsn');
+		updatePartWithImg(itemsn, partsn, '', jsonData)
+		renderForm(jsonData);
+	});
+	
+	$(document).on("mouseover", "div.thumbnail" , function(e) {
+		$(this).find('div').removeClass('hide');
+	});
+	$(document).on("mouseout", "div.thumbnail" , function(e) {
+		$(this).find('div').addClass('hide');
+	});
+	
+	$(document).on("click", "a.action-save" , function(e) {
+		var s = syntaxHighlight(JSON.stringify(jsonData, undefined, 4));
+		
+		$('#modal-result').html('<div class="print-json">'+s+'</div>')
+		$('#myModal').modal();
+	});
 });
+
 
 function commonQuestionTemplate(itemType, values){
 	var question = 'Question here?';
@@ -164,6 +231,16 @@ function reorderParts(newParts, itemsnThis, data){
 		var item = items[i];
 		var itemsn = item.itemsn;
 		if (itemsnThis == itemsn){
+			var parts = item.parts;
+			for (var j = 0; j < parts.length; j++) {
+				var part = parts[j];
+				for (var k = 0; k < newParts.length; k++) {
+					if (newParts[k].partsn == part.partsn) {
+						newParts[k].img = part.img;
+						newParts[k].value = part.value;
+					}
+				}
+			}
 			item.parts = newParts.slice();
 			break;
 		}
@@ -219,7 +296,9 @@ function duplicateItem(itemsnThis, data){
 			var parts = item.parts;
 			for (var j = 0; j < parts.length; j++) {
 				var part = parts[j];
-				newItem.parts.push(part);
+				var newPart = createPartOptionMultiple(part.value);
+				newPart.img = part.img;
+				newItem.parts.push(newPart);
 			}
 			data.pages[0].items.splice(i, 0, newItem);
 			break;
@@ -263,6 +342,25 @@ function updatePart(itemsnThis, partsnThis, valueThis, data){
 	}
 }
 
+function updatePartWithImg(itemsnThis, partsnThis, imgThis, data){
+	var items = data.pages[0].items;
+	for (var i = 0; i < items.length; i++) {
+		var item = items[i];
+		var itemsn = item.itemsn;
+		if (itemsnThis == itemsn){
+			var parts = item.parts;
+			for (var j = 0; j < parts.length; j++) {
+				var part = parts[j];
+				var partsn = part.partsn;
+				if (partsnThis == partsn){
+					part.img = imgThis;
+					break;
+				}
+			}
+		}
+	}
+}
+
 function updateItem(itemsnThis, questionThis, data){
 	var items = data.pages[0].items;
 	for (var i = 0; i < items.length; i++) {
@@ -270,6 +368,18 @@ function updateItem(itemsnThis, questionThis, data){
 		var itemsn = item.itemsn;
 		if (itemsnThis == itemsn){
 			item.question = questionThis;
+			break;
+		}
+	}
+}
+
+function updateItemWithImg(itemsnThis, imgThis, data){
+	var items = data.pages[0].items;
+	for (var i = 0; i < items.length; i++) {
+		var item = items[i];
+		var itemsn = item.itemsn;
+		if (itemsnThis == itemsn){
+			item.img = imgThis;
 			break;
 		}
 	}
@@ -290,13 +400,9 @@ function doSortParts(){
 			console.log('itemsn='+itemsn);
     		$('li.part').each(function(i) { 
     			var partsn = $(this).attr('partsn');
-    			var partInput = $(this).find('input.part-input');
-    			var value = partInput.val();
-        		console.log('partsn='+partsn+', value='+value);
         		
         		var part = new Object();
         		part.partsn = partsn;
-        		part.value = value;
         		newParts.push(part);
     		});
 
@@ -460,6 +566,8 @@ function createItem(question, type){
 	item.itemsn = uuid();
 	item.type = type;
 	item.question = question;
+	item.img = '';
+	item.colNum = 3;
 	
 	return item;
 }
@@ -468,19 +576,28 @@ function createPartOptionMultiple(value){
 	var part = new Object();
 	part.partsn = uuid();
 	part.value = value;
+	part.img = '';
 	
 	return part;
 }
 
-function setCursorToEnd(ele)
-{
-  var range = document.createRange();
-  var sel = window.getSelection();
-  range.setStart(ele, 1);
-  range.collapse(true);
-  sel.removeAllRanges();
-  sel.addRange(range);
-  ele.focus();
+function syntaxHighlight(json) {
+    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+        var cls = 'number';
+        if (/^"/.test(match)) {
+            if (/:$/.test(match)) {
+                cls = 'key';
+            } else {
+                cls = 'string';
+            }
+        } else if (/true|false/.test(match)) {
+            cls = 'boolean';
+        } else if (/null/.test(match)) {
+            cls = 'null';
+        }
+        return '<span class="' + cls + '">' + match + '</span>';
+    });
 }
 
 var uuid = (function () {

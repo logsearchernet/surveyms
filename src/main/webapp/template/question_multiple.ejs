@@ -4,17 +4,64 @@
 						<div class="form-group">
 							<label for="question"><%=question%></label>
 							<%
+							if (img != '') {
+							%>
+							<div class="thumbnail" style="position:relative;">
+								<img src="<%=img%>" width="100%"/>
+								<div class="hide" style="position:absolute;right:0; margin-top:-15px;">
+									<button type="button" class="btn btn-default action-remove-item-img"><i class="fa fa-close fa-lg"></i> Remove</button>
+								</div>	
+							</div>
+							<%
+							} // end if
+							%>
+							
+							
+							
+							<!-- 2 COL -->
+							<table border="0" width="100%">
+							
+							<%
 							for (var i=0; parts!=null && i<parts.length; i++) {
 							%>
-							<div class="radio">
-								<label> 
+							<%
+							if (i%colNum==0 && i!=0) {
+							%>
+								<tr>
+							<%
+							} // end if
+							%>
+								<td width="<%=100/colNum%>%" valign="top" style="padding:5px;">
 								<input type="radio" id="<%=parts[i].partsn%>" value="<%=parts[i].partsn%>" partsn="<%=parts[i].partsn%>"/> 
 								<%=parts[i].value%>
-								</label>
-							</div>
+								
+								<%
+								if (parts[i].img != '') {
+								%>
+								<div class="thumbnail" style="position:relative;">
+									<img class="thumbnail-part" src="<%=parts[i].img%>" width="100%"/>
+									<div class="hide" style="position:absolute;right:0; margin-top:-15px;">
+										<button type="button" partsn="<%=parts[i].partsn%>" class="btn btn-default action-remove-part-img"><i class="fa fa-close fa-lg"></i> Remove</button>
+									</div>
+								</div>
+								<%
+								} // end if
+								%>
+								</td>
+							<%
+							if ((i+1)%colNum==0 && i!=0) {
+							%>
+								</tr>
+							<%
+							} // end if
+							%>
 							<%
 							} // end for
 							%>
+							
+							</table>
+							<!-- 2 COL END -->
+							
 						</div>
 						
 						</div>
@@ -28,7 +75,7 @@
 								<i class="fa fa-files-o"></i> Duplicate
 							</button>
 							&nbsp;&nbsp;&nbsp;&nbsp;
-							<button class="btn btn-default btn-sm action-remove-item">
+							<button class="btn btn-default btn-sm action-remove-item" itemsn="<%=itemsn%>">
 								<i class="fa fa-trash-o"></i> Remove
 							</button>
 							&nbsp;&nbsp;&nbsp;&nbsp;

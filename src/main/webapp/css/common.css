@@ -57,9 +57,16 @@ body {
 }
 
 
+.border-dashed {
+	border: 1px dashed orange;
+}
 
-
-
+.print-json {outline: 1px solid #ccc; padding: 5px; margin: 5px; height: 100%; }
+.string { color: green; }
+.number { color: darkorange; }
+.boolean { color: blue; }
+.null { color: magenta; }
+.key { color: red; }
 
 .navbar-center
 {
