@@ -1,0 +1,22 @@
+					
+					<li itemsn="<%=itemsn%>" class="question" style="list-style-type: none">
+						<div class="question-box">
+							<div class="form-group">
+							<%
+							if (img != '') {
+							%>
+							<div class="thumbnail" style="position:relative;">
+								<img src="<%=img%>" width="100%"/>
+							</div>
+							<%
+							} else {
+							%>
+							<div align="center" style="line-height: 200px">
+								<i class="fa fa-file-photo-o fa-5x"></i>
+							</div>
+							<%
+							} // end if
+							%>
+						</div>
+						</div>
+					</li>

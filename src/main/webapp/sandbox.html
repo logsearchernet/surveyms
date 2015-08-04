@@ -65,6 +65,10 @@
                 </ul>
                 <div class="tab-content nano">
                   <div class="tab-pane nano-content active" id="tab_1" style="right:0;">
+                  	<div class="row margin-top margin-right">
+                    	<div class="col-xs-6 "><button type="button" id="newPage" class="btn btn-block btn-default bg-olive"><i class="fa fa-plus-square"></i> Create New Page</button></div>
+                    	<div class="col-xs-6 "></div>
+                    </div>
                     <div class="row margin-top margin-right">
                     	<div class="col-xs-6 "><button type="button" id="questionMultiple" class="btn btn-block btn-default"><i class="fa fa-dot-circle-o"></i> Multiple Choice</button></div>
                     	<div class="col-xs-6 "><button type="button" id="questionCheckbox" class="btn btn-block btn-default"><i class="fa fa-check-square-o"></i> Checkbox</button></div>
@@ -74,17 +78,17 @@
                     	<div class="col-xs-6"><button type="button" id="questionTextbox" class="btn btn-block btn-default"><i class="fa fa-minus-square-o"></i> Fill in the blank</button></div>
                     </div>
                     <div class="row margin-top margin-right">
-                    	<div class="col-xs-6"><button type="button" id="questionTrueFalse" class="btn btn-block btn-default"><i class="fa fa-dot-circle-o"></i> Essay</button></div>
+                    	<div class="col-xs-6"><button type="button" id="questionEssay" class="btn btn-block btn-default"><i class="fa fa-pencil"></i> Essay</button></div>
+                    	<div class="col-xs-6"><button type="button" id="questionTextOnly" class="btn btn-block btn-default"><i class="fa fa-file-word-o"></i> Text Only</button></div>
+                    </div>
+                    <div class="row margin-top margin-right">
+                    	<div class="col-xs-6"><button type="button" id="questionImageOnly" class="btn btn-block btn-default"><i class="fa fa-file-photo-o"></i> Image Only</button></div>
                     	<div class="col-xs-6"></div>
                     </div>
                     <hr style="width: 90%; margin-left:11px;margin-right:11px;">
+                    <label>Other Options</label>
                     <div class="row margin-top margin-right">
-                    	<div class="col-xs-6"><button type="button" id="questionTrueFalse" class="btn btn-block btn-default"><i class="fa fa-dot-circle-o"></i> Image Only</button></div>
-                    	<div class="col-xs-6"><button type="button" id="questionTextbox" class="btn btn-block btn-default"><i class="fa fa-minus-square-o"></i> Text Only</button></div>
-                    </div>
-                    <hr style="width: 90%; margin-left:11px;margin-right:11px;">
-                    <div class="row margin-top margin-right">
-                    	<div class="col-xs-6"><button type="button" id="questionTrueFalse" class="btn btn-block btn-default"><i class="fa fa-dot-circle-o"></i> Manage Point</button></div>
+                    	<div class="col-xs-6"><button type="button" id="managePoint" class="btn btn-block btn-default"><i class="fa fa-list"></i> Manage Point</button></div>
                     	<div class="col-xs-6"></div>
                     </div>
                   </div><!-- /.tab-pane -->
@@ -103,6 +107,10 @@
               </div>
 		</div>
 		<div style="width:600px;margin-left:630px;">
+			<div>
+				<label class="badge bg-green">Page</label>
+				<span class="badge">1</span> <span class="badge">2</span>
+			</div>
 			<div id="title-edit" style="position: relative;">
 				<div class="hide" id="title-editbar" style="position: absolute;right: 0;word-wrap: break-word;">
 				<button type="button" class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o"></i> Edit</button>

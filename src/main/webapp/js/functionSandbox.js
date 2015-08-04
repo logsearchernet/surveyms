@@ -78,6 +78,26 @@ $(document).ready(function(){
 		
 	});
 	
+	$(document).on("click", "button#questionEssay" , function(e) {
+		var itemType = 'textarea';
+		var values = new Array(0);
+		values.push('')
+		commonQuestionTemplate(itemType, values)
+	});
+	
+	$(document).on("click", "button#questionImageOnly" , function(e) {
+		var itemType = 'imageOnly';
+		var values = new Array(0);
+		commonQuestionTemplate(itemType, values)
+	});
+	
+	$(document).on("click", "button#questionTextOnly" , function(e) {
+		var itemType = 'textOnly';
+		var values = new Array(0);
+		values.push('Some text here')
+		commonQuestionTemplate(itemType, values)
+	});
+	
 	$(document).on("click", "div.question-box" , function(e) {
 		activaTab('tab_2');
 		currentItemsn = $(this).closest('li.question').attr('itemsn');
@@ -121,8 +141,6 @@ $(document).ready(function(){
 		renderJsonData(jsonData);
 	});
 	
-	
-	
 	$(document).on("keyup", "div#question-input" , function(e) {
 
 		   var proname = $(this).html();
@@ -134,7 +152,7 @@ $(document).ready(function(){
 		   
 	});
 	
-	$(document).on("keyup", "input.part-input" , function(e) {
+	$(document).on("keyup", "input.part-input, textarea.part-input" , function(e) {
 		   var proname = $(this).val();
 		   currentPartsn = $(this).attr('partsn');
 		   currentItemsn = $(this).closest('.form-group').attr('itemsn');
@@ -223,7 +241,6 @@ function commonQuestionTemplate(itemType, values){
 	var question = 'Question here?';
 	var item = createItem(question, itemType);
 	item.parts = new Array(0);
-	
 	for (var i = 0; i < values.length; i++) {
 		var part = createPartOptionMultiple(values[i]);
 		item.parts.push(part);
@@ -536,6 +553,8 @@ function renderForm(data){
 		var item = items[i];
 		console.log(JSON.stringify(item));
 		
+		var editbar = new EJS({url: basePath+'template/question-editbar.ejs'}).render(item);
+		
 		var msg = '';
 		if (item.type == 'radio') {
 			msg += new EJS({url: basePath+'template/question_multiple.ejs'}).render(item);
@@ -545,9 +564,17 @@ function renderForm(data){
 			msg += new EJS({url: basePath+'template/question_truefalse.ejs'}).render(item);
 		} else if (item.type == 'textbox'){
 			msg += new EJS({url: basePath+'template/question_textbox.ejs'}).render(item);
-		}
+		} else if (item.type == 'textarea'){
+			msg += new EJS({url: basePath+'template/question_textarea.ejs'}).render(item);
+		} else if (item.type == 'imageOnly'){
+			msg += new EJS({url: basePath+'template/imageOnly.ejs'}).render(item);
+		} else if (item.type == 'textOnly'){
+			msg += new EJS({url: basePath+'template/textOnly.ejs'}).render(item);
+		} 
+		
 		
 		$('#questions').append(msg);
+		$('li[itemsn='+item.itemsn+']').append(editbar)
 	}
 }
 
