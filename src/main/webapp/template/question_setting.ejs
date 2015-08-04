@@ -14,9 +14,10 @@
 				    <%
 				    if (type == 'radio' || type == 'checkbox') {
 				    %>
-                      <div class="radio">
-                      	<div class="col-xs-4 text-left">
-                      	<h4><strong><%=(type == 'radio' || type == 'checkbox')? 'Field Layout: ':''%></strong></h4>
+                      <div class="form-horizontal">
+                      	<div class="form-group" itemsn="<%=itemsn%>">
+                      	<div class="col-xs-4">
+                      	<label><h4><strong><%=(type == 'radio' || type == 'checkbox')? 'Field Layout: ':''%></strong></h4><label>
                       	</div>
                       	<div class="col-xs-8">
                       		<select class="form-control optionColumn">
@@ -25,9 +26,8 @@
                       			<option value="3" <%=(col==3)?'selected="selected"':''%>>Three Column</option>
                       		</select>
                       	</div>
+                      	</div>
                       </div>
-				   	<br/>
-				   	<br/>
 				   	<%
 				   	} // end if
 				   	%>
