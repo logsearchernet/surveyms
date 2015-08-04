@@ -42,6 +42,9 @@ body {
 .padding-left {
 	padding-left: 5px;
 }
+.padding-right {
+	padding-right: -5px;
+}
 .margin-bottom {
 	margin-bottom: 5px;
 }
@@ -56,6 +59,16 @@ body {
 	padding:0;
 }
 
+.padding {
+	padding:10px;
+}
+
+.margin-top {
+	margin-top: 10px;
+}
+.margin-right {
+	margin-right: 10px;
+}
 
 .border-dashed {
 	border: 1px dashed orange;
@@ -67,6 +80,15 @@ body {
 .boolean { color: blue; }
 .null { color: magenta; }
 .key { color: red; }
+
+.tab-content {
+	height:500px !important; 
+	overflow: hidden; 
+}
+.tab-pane {
+	padding: 15px;	
+	
+}
 
 .navbar-center
 {

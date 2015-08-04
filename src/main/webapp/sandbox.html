@@ -7,6 +7,7 @@
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
 <link rel="stylesheet" type="text/css" href="css/AdminLTE.css"/>
 <link rel="stylesheet" type="text/css" href="css/font-awesome.css"/>
+<link rel="stylesheet" type="text/css" href="css/nanoscroller.css"/>
 <link rel="stylesheet" type="text/css" href="css/common.css"/>
 
 <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
@@ -14,6 +15,7 @@
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script type="text/javascript" src="js/bootstrap-switch.js"></script>
 <script type="text/javascript" src="js/ejs_production.js"></script>
+<script type="text/javascript" src="js/jquery.nanoscroller.js"></script>
 <script type="text/javascript" src="plugin/tinymce/tinymce.min.js"></script>
 <script type="text/javascript" src="js/functionSandbox.js"></script>
 </head>
@@ -37,45 +39,50 @@
   </div>
 </nav>
 
-<div class="container-fixed" style="width: 1000px;margin: 0 auto 0 auto;margin-top: 70px;">
-	<div class="row" style="width:1000px;">
-			
-			<div style="width:370px; position:fixed;">
-			<div class="row">
-      					<div class="col-xs-12">
-      					<a class="btn btn-app bg-maroon action-delete pull-left"><i class="fa fa-trash-o"></i> Delete</a>
-	      				<a class="btn btn-app bg-olive action-save pull-right"><i class="fa fa-floppy-o"></i> Save</a>
-      					<a class="btn btn-app action-dashboard pull-right"><i class="fa fa-tachometer"></i> Dashboad</a>
-      					<a class="btn btn-app action-share pull-right"><i class="fa fa-share-alt"></i> Share</a>
-	      				</div>
-                 	 </div>
-			<div class="nav-tabs-custom">
+<div class="container-fixed" style="width: 1100px;margin: 0 auto 0 auto;margin-top: 70px;">
+	<div class="row" style="width:1200px;">
+			<div style="width:100px; position:fixed;">
+					<div class="col-xs-12">
+						<a class="btn btn-app bg-olive action-save pull-right"><i class="fa fa-floppy-o"></i> Save</a>
+					</div>
+					<div class="col-xs-12">
+						<a class="btn btn-app action-dashboard bg-purple pull-right"><i class="fa fa-tachometer"></i> Dashboad</a>
+					</div>
+					<div class="col-xs-12">
+						<a class="btn btn-app action-share bg-orange pull-right"><i class="fa fa-share-alt"></i> Share</a>
+					</div>
+					<div class="col-xs-12">
+						<a class="btn btn-app bg-maroon action-delete pull-right"><i class="fa fa-trash-o"></i> Delete</a>
+					</div>
+				</div>
+			<div class="side-bar" style="width:500px; position:fixed;margin-left:100px;">
+			<div class="nav-tabs-custom padding">
 				
                 <ul class="nav nav-tabs">
                   <li class="active"><a href="#tab_1" data-toggle="tab">Add a Question</a></li>
                   <li><a href="#tab_2" data-toggle="tab">Question Settings</a></li>
                   <li><a href="#tab_3" data-toggle="tab">Quiz Setting</a></li>
                 </ul>
-                <div class="tab-content" style="min-height: 600px;">
-                  <div class="tab-pane active" id="tab_1">
-                    <div class="row">
-                    	<div class="col-xs-6"><button type="button" id="questionMultiple" class="btn btn-block btn-default"><i class="fa fa-dot-circle-o"></i> Multiple Choice</button></div>
-                    	<div class="col-xs-6"><button type="button" id="questionCheckbox" class="btn btn-block btn-default"><i class="fa fa-check-square-o"></i> Checkbox</button></div>
+                <div class="tab-content nano">
+                  <div class="tab-pane nano-content active" id="tab_1" style="right:0;">
+                    <div class="row margin-top margin-right">
+                    	<div class="col-xs-6 "><button type="button" id="questionMultiple" class="btn btn-block btn-default"><i class="fa fa-dot-circle-o"></i> Multiple Choice</button></div>
+                    	<div class="col-xs-6 "><button type="button" id="questionCheckbox" class="btn btn-block btn-default"><i class="fa fa-check-square-o"></i> Checkbox</button></div>
                     </div>
                     <br/>
-                    <div class="row">
+                    <div class="row margin-right">
                     	<div class="col-xs-6"><button type="button" id="questionTrueFalse" class="btn btn-block btn-default"><i class="fa fa-dot-circle-o"></i> True/False</button></div>
                     	<div class="col-xs-6"><button type="button" id="questionTextbox" class="btn btn-block btn-default"><i class="fa fa-minus-square-o"></i> Fill in the blank</button></div>
                     </div>
                     
                   </div><!-- /.tab-pane -->
-                  <div class="tab-pane" id="tab_2">
+                  <div class="tab-pane nano-content" id="tab_2">
                   	
 				    
 				    
                   </div><!-- /.tab-pane -->
-                  <div class="tab-pane" id="tab_3">
-                    <div class="form-group">
+                  <div class="tab-pane nano-content" id="tab_3">
+                    <div class="form-group  margin-right">
 				    	<label for="title">Title</label>
 				    	<textarea class="form-control" rows="3" id="title-input"></textarea>
 				    </div>
@@ -83,7 +90,7 @@
                 </div><!-- /.tab-content -->
               </div>
 		</div>
-		<div style="width:630px;margin-left:400px;">
+		<div style="width:600px;margin-left:630px;">
 			<div id="title-edit" style="position: relative;">
 				<div class="hide" id="title-editbar" style="position: absolute;right: 0;word-wrap: break-word;">
 				<button type="button" class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o"></i> Edit</button>
@@ -110,7 +117,7 @@
         <h4 class="modal-title" id="myModalLabel">Modal title</h4>
       </div>
       <div class="modal-body">
-        <div id="modal-result" style="width: 100%; height: 300px;"></div>
+        <div id="modal-result" style="width: 100%; height: 300px;overflow-y:auto;"></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

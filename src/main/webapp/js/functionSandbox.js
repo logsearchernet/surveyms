@@ -7,6 +7,7 @@ $(document).ready(function(){
 	
 	jsonData = createJsonData();
 	renderJsonData(jsonData);
+	$(".nano").nanoScroller();
 	
 	$(document).on("keyup", "textarea#title-input" , function(e) {
 		   proname = $(this).val();
@@ -41,6 +42,7 @@ $(document).ready(function(){
 		$(this).removeClass('border-dashed')
 	});
 	
+	
 	$(document).on("click", "button#questionMultiple" , function(e) {
 		var itemType = 'radio';
 		var values = new Array(0);
@@ -48,7 +50,6 @@ $(document).ready(function(){
 		values.push('Your Option 2')
 		values.push('Your Option 3')
 		commonQuestionTemplate(itemType, values)
-		activaTab('tab_2');
 	});
 	
 	$(document).on("click", "button#questionCheckbox" , function(e) {
@@ -58,7 +59,6 @@ $(document).ready(function(){
 		values.push('Your Option 2')
 		values.push('Your Option 3')
 		commonQuestionTemplate(itemType, values)
-		activaTab('tab_2');
 	});
 	
 	$(document).on("click", "button#questionTrueFalse" , function(e) {
@@ -67,7 +67,6 @@ $(document).ready(function(){
 		values.push('True')
 		values.push('False')
 		commonQuestionTemplate(itemType, values)
-		activaTab('tab_2');
 		
 	});
 	
@@ -76,13 +75,17 @@ $(document).ready(function(){
 		var values = new Array(0);
 		values.push('')
 		commonQuestionTemplate(itemType, values)
-		activaTab('tab_2');
+		
 	});
 	
 	$(document).on("click", "div.question-box" , function(e) {
 		activaTab('tab_2');
 		currentItemsn = $(this).closest('li.question').attr('itemsn');
-		renderJsonData(jsonData);
+		renderQuestionSetting(jsonData);
+		$('div.question-box').each(function (e){
+			$(this).removeClass('bg-maroon'); 
+		});
+		$(this).addClass('bg-maroon');
 	});
 	
 	$(document).on("click", "button#addNewOption" , function(e) {
@@ -108,6 +111,8 @@ $(document).ready(function(){
 	
 	$(document).on("click", "button.action-edit-item" , function(e) {
 		activaTab('tab_2')
+		renderQuestionSetting(jsonData);
+		$(this).parent('div.question-editbar').prev().addClass('bg-maroon')
 	});
 	
 	$(document).on("click", "button.action-duplicate-item" , function(e) {
@@ -203,6 +208,13 @@ $(document).ready(function(){
 		
 		$('#modal-result').html('<div class="print-json">'+s+'</div>')
 		$('#myModal').modal();
+	});
+	
+	$(document).on("click", "select.optionColumn" , function(e) {
+		var col = $(this).val();
+		var itemsn = $(this).closest('div.form-group').attr('itemsn');
+		updateItemWithCol(itemsn, col, jsonData);
+		renderForm(jsonData);
 	});
 });
 
@@ -385,6 +397,18 @@ function updateItemWithImg(itemsnThis, imgThis, data){
 	}
 }
 
+function updateItemWithCol(itemsnThis, colThis, data){
+	var items = data.pages[0].items;
+	for (var i = 0; i < items.length; i++) {
+		var item = items[i];
+		var itemsn = item.itemsn;
+		if (itemsnThis == itemsn){
+			item.col = colThis;
+			break;
+		}
+	}
+}
+
 function activaTab(tab){
     $('.nav-tabs a[href="#' + tab + '"]').tab('show');
 };
@@ -423,20 +447,8 @@ function doSortItems(){
     		$('li.question').each(function(i) { 
     			var itemsn = $(this).attr('itemsn');
     			console.log('itemsn='+itemsn);
-    			var item = getItemObject(itemsn, jsonData);//new Object();
-    			/*item.itemsn = itemsn;
-    			item.type = getItemType(itemsn);
-    			item.question = getItemQuestion(itemsn);*/
+    			var item = getItemObject(itemsn, jsonData);
     			newItems.push(item);
-    			/*var partsn = $(this).attr('partsn');
-    			var partInput = $(this).find('input.part-input');
-    			var value = partInput.val();
-        		console.log('partsn='+partsn+', value='+value);
-        		
-        		var part = new Object();
-        		part.partsn = partsn;
-        		part.value = value;
-        		newParts.push(part);*/
     		});
     		reorderItems(newItems, jsonData);
     		renderJsonData(jsonData);
@@ -528,7 +540,7 @@ function renderForm(data){
 		if (item.type == 'radio') {
 			msg += new EJS({url: basePath+'template/question_multiple.ejs'}).render(item);
 		} else if (item.type == 'checkbox'){
-			msg += new EJS({url: basePath+'template/question_checkbox.ejs'}).render(item);
+			msg += new EJS({url: basePath+'template/question_multiple.ejs'}).render(item);
 		} else if (item.type == 'truefalse'){
 			msg += new EJS({url: basePath+'template/question_truefalse.ejs'}).render(item);
 		} else if (item.type == 'textbox'){
@@ -567,7 +579,7 @@ function createItem(question, type){
 	item.type = type;
 	item.question = question;
 	item.img = '';
-	item.colNum = 3;
+	item.col = 1;
 	
 	return item;
 }

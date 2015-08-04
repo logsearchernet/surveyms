@@ -25,14 +25,14 @@
 							for (var i=0; parts!=null && i<parts.length; i++) {
 							%>
 							<%
-							if (i%colNum==0 && i!=0) {
+							if (i%col==0 && i!=0) {
 							%>
 								<tr>
 							<%
 							} // end if
 							%>
-								<td width="<%=100/colNum%>%" valign="top" style="padding:5px;">
-								<input type="radio" id="<%=parts[i].partsn%>" value="<%=parts[i].partsn%>" partsn="<%=parts[i].partsn%>"/> 
+								<td width="<%=100/col%>%" valign="top" style="padding:5px;">
+								<input type="<%=type%>" id="<%=parts[i].partsn%>" value="<%=parts[i].partsn%>" partsn="<%=parts[i].partsn%>"/> 
 								<%=parts[i].value%>
 								
 								<%
@@ -49,7 +49,7 @@
 								%>
 								</td>
 							<%
-							if ((i+1)%colNum==0 && i!=0) {
+							if ((i+1)%col==0 && i!=0) {
 							%>
 								</tr>
 							<%
