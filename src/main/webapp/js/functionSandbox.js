@@ -146,8 +146,13 @@ $(document).ready(function(){
 	
 	$(document).on("click", "button.action-remove-page" , function(e) {
 		var pageindex = $(this).attr('pageindex');
-		removePage(pageindex, jsonData);
-		currentPageIndex = (pageindex==0)?0:pageindex - 1;
+		if (jsonData.pages.length <= 1) {
+			currentPageIndex = 0;
+			alert('The quiz MUST at least one page.');
+		} else {
+			removePage(pageindex, jsonData);
+			currentPageIndex = (pageindex==0)?0:pageindex - 1; 
+		}
 		renderJsonData(jsonData, currentPageIndex);
 		activaTab('tab_1');
 	});
@@ -532,7 +537,7 @@ function renderQuizSetting(data){
 }
 
 function renderQuestionSetting(data, pageIndex){
-	if (data.pages.length < 1) return;
+	
 	$('#tab_2').children().remove();
 	var items = data.pages[pageIndex].items;
 	for (var i = 0; items!=null && i < items.length; i++) {
@@ -577,7 +582,7 @@ function renderQuestionSetting(data, pageIndex){
 }
 
 function renderForm(data, pageIndex){
-	if (data.pages.length < 1) return;
+	
 	$('#questions').children().remove();
 	var title = data.setup.title;
 	$('#title').text(title);
@@ -612,7 +617,7 @@ function renderForm(data, pageIndex){
 }
 
 function renderPagination(data, currentPageIndex) {
-	if (data.pages.length < 1) return;
+	
 	var obj = new Object();
 	obj = data;
 	obj.currentPageIndex = currentPageIndex;
