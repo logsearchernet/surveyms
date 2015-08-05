@@ -14,6 +14,22 @@
 				   
 				    <div class="form-group padding-top" itemsn="<%=itemsn%>">
 				    
+				    <%
+				    if (type == 'textarea') {
+				    %>
+				   	<div class="form-horizontal">
+                      	<div class="form-group" itemsn="<%=itemsn%>">
+                      	<div class="col-xs-6">
+                      	<label><h4><strong>Number of Row [1 to 99]: </strong></h4><label>
+                      	</div>
+                      	<div class="col-xs-6">
+                      		<input type="text" class="form-control textarea-row" value="<%=row%>" pattern="\d*" min="1" max="99" maxlength="2"/>
+                      	</div>
+                      	</div>
+                      </div>
+				    <%
+				   	} // end if
+				   	%>
 				    
 				    <%
 				    if (type == 'radio' || type == 'checkbox') {
@@ -90,6 +106,7 @@
 							<div class="text">
 								<textarea class="form-control part-input" id="<%=parts[j].partsn%>" partsn="<%=parts[j].partsn%>" row="5"><%=parts[j].value%></textarea> 
 							</div>
+							
 							<%
 							} // end for
 							%>

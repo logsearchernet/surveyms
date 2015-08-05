@@ -169,6 +169,20 @@ $(document).ready(function(){
 		renderJsonData(jsonData, currentPageIndex);
 	});
 	
+	$(document).on("keyup", "input.textarea-row" , function(e) {
+		var itemsn = $(this).closest('div.form-group').attr('itemsn');
+		var row = $(this).val();
+		if (row < 100){
+			updateItemWithRow(itemsn, row, jsonData, currentPageIndex);
+			renderJsonData(jsonData, currentPageIndex);
+		} else {
+			alert('Number MUST be less then 100.');
+			$(this).val('')
+		}
+		var temp = $('input.textarea-row').val();
+		$('input.textarea-row').val(temp).focus();
+	});
+	
 	$(document).on("keyup", "div#question-input" , function(e) {
 
 		   var proname = $(this).html();
@@ -449,6 +463,18 @@ function updateItemWithImg(itemsnThis, imgThis, data, pageIndex){
 	}
 }
 
+function updateItemWithRow(itemsnThis, rowThis, data, pageIndex){
+	var items = data.pages[pageIndex].items;
+	for (var i = 0; i < items.length; i++) {
+		var item = items[i];
+		var itemsn = item.itemsn;
+		if (itemsnThis == itemsn){
+			items[i].row = rowThis;
+			break;
+		}
+	}
+}
+
 function updateItemWithCol(itemsnThis, colThis, data, pageIndex){
 	var items = data.pages[pageIndex].items;
 	for (var i = 0; i < items.length; i++) {
@@ -660,6 +686,9 @@ function createItem(question, type){
 	item.question = question;
 	item.img = '';
 	item.col = 1;
+	if (type == 'textarea') {
+		item.row = 5;
+	}
 	
 	return item;
 }
