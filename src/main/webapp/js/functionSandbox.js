@@ -116,7 +116,7 @@ $(document).ready(function(){
 	$(document).on("click", "div.question-box" , function(e) {
 		activaTab('tab_2');
 		currentItemsn = $(this).closest('li.question').attr('itemsn');
-		renderQuestionSetting(jsonData, currentPageIndex);
+		renderJsonData(jsonData, currentPageIndex);
 		$('div.question-box').each(function (e){
 			$(this).removeClass('bg-maroon'); 
 		});
@@ -130,7 +130,7 @@ $(document).ready(function(){
 		renderJsonData(jsonData, currentPageIndex);
 	});
 	
-	$(document).on("click", "button.removePart" , function(e) {
+	$(document).on("click", "button.remove-part" , function(e) {
 		var partsn = $(this).attr('partsn');
 		removePart(currentItemsn, partsn, jsonData, currentPageIndex);
 		renderJsonData(jsonData, currentPageIndex);
@@ -209,7 +209,7 @@ $(document).ready(function(){
 	
 	});
 	
-	$(document).on("click", "button.uploadPartPhoto" , function(e) {
+	$(document).on("click", "button.upload-part-photo" , function(e) {
 	    $(this).next("input.filePartInput").trigger('click');
 	});
 	   
@@ -337,8 +337,8 @@ function addPartOption(itemsnThis, data, pageIndex){
 	}
 }
 
-function removePart(itemsnThis, partsnThis, data){
-	var items = data.pages[0].items;
+function removePart(itemsnThis, partsnThis, data, pageIndex){
+	var items = data.pages[pageIndex].items;
 	for (var i = 0; i < items.length; i++) {
 		var item = items[i];
 		var itemsn = item.itemsn;
@@ -360,7 +360,7 @@ function removePart(itemsnThis, partsnThis, data){
 }
 
 function duplicateItem(itemsnThis, data, pageIndex){
-	var items = data.pages[0].items;
+	var items = data.pages[pageIndex].items;
 	for (var i = 0; i < items.length; i++) {
 		var item = items[i];
 		var itemsn = item.itemsn;
@@ -493,7 +493,7 @@ function activaTab(tab){
 
 function doSortParts(pageIndex){
     $("#parts").sortable({
-    	handle:'button.movePart',
+    	handle:'button.move-part',
     	cancel: '',
     	update: function(event, ui) {
     		var newParts = new Array(0);

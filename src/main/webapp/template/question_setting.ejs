@@ -44,6 +44,8 @@
                       			<option value="1" <%=(col==1)?'selected="selected"':''%>>One Column</option>
                       			<option value="2" <%=(col==2)?'selected="selected"':''%>>Two Column</option>
                       			<option value="3" <%=(col==3)?'selected="selected"':''%>>Three Column</option>
+                      			<option value="4" <%=(col==4)?'selected="selected"':''%>>Four Column</option>
+                      			<option value="5" <%=(col==5)?'selected="selected"':''%>>Five Column</option>
                       		</select>
                       	</div>
                       	</div>
@@ -62,17 +64,17 @@
 					<li class="part" partsn="<%=partsn%>">
 						<div class="row margin-bottom part">
 					    	<div class="col-xs-1 padding-right-zero">
-					    		<button type="button" class="btn btn-link movePart padding-zero"><i class="fa fa-arrows fa-lg"></i></button>
+					    		<button type="button" class="btn btn-link move-part padding-zero"><i class="fa fa-arrows fa-lg"></i></button>
 					    	</div>
 					    	<div class="col-xs-9">
 					    		<input type="text" class="form-control part-input" value="<%=parts[i].value%>" partsn="<%=partsn%>"/>
 					    	</div>
 					    	<div class="col-xs-1 padding-left-zero padding-right-zero pull-center">
-					    		<button type="button" class="btn btn-link padding-zero uploadPartPhoto" partsn="<%=partsn%>"><i class="fa fa-file-photo-o fa-lg"></i></button>
+					    		<button type="button" class="btn btn-link padding-zero upload-part-photo" partsn="<%=partsn%>"><i class="fa fa-file-photo-o fa-lg"></i></button>
 					    		<input type="file" class="filePartInput hide" partsn="<%=partsn%>"/>
 					    	</div>
 					    	<div class="col-xs-1 padding-left-zero padding-right-zero pull-center">
-					    		<button type="button" class="btn btn-link removePart padding-zero" partsn="<%=partsn%>"><i class="fa fa-trash-o fa-lg"></i></button>
+					    		<button type="button" class="btn btn-link remove-part padding-zero" partsn="<%=partsn%>"><i class="fa fa-trash-o fa-lg"></i></button>
 					    	</div>
 					    </div>
 					</li>
