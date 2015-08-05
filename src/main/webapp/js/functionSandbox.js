@@ -300,9 +300,19 @@ $(document).ready(function(){
 		renderForm(jsonData, currentPageIndex);
 	});
 	
-	
+	$(document).on("click", "span.nav-question" , function(e) {
+		var aid = $(this).attr('itemsn');
+		var aTag = $("li[itemsn='"+ aid +"']");
+		var s = aTag.offset().top - 178
+		console.log(s)
+	    $('html,body').animate({scrollTop: s},'slow');
+	});
 });
 
+function scrollToAnchor(aid){
+    var aTag = $("a[name='"+ aid +"']");
+    $('html,body').animate({scrollTop: aTag.offset().top},'slow');
+}
 
 function commonQuestionTemplate(itemType, values, pageIndex){
 	var question = 'Question here?';
@@ -590,7 +600,7 @@ function renderJsonData(data, pageIndex){
 function renderNavQuestion(data){
 	var msg = '';
 	msg += new EJS({url: basePath+'template/nav_questions.ejs'}).render(data);
-	$('#nav-question').html(msg);
+	$('#nav-questions').html(msg);
 }
 
 function renderQuizSetting(data){
