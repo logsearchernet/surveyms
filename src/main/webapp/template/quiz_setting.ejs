@@ -1,0 +1,28 @@
+					<div class="form-group  margin-right">
+				    	<label for="title">Title</label>
+				    	<textarea class="form-control" rows="3" id="title-input"><%=setup.title%></textarea>
+				    </div>
+				    <div class="form-group">
+				    	<div class="checkbox">
+                        <label>
+                          <input type="checkbox" id="randomized-question-input" <%=(setup.randomizedQuestion)?'checked="checked"':''%>/>
+                          Randomized Question
+                        </label>
+                      	</div>
+				    </div>
+				    <div class="form-group">
+				    	<div class="checkbox">
+                        <label>
+                          <input type="checkbox" id="randomized-answer-input" <%=(setup.randomizedAnswer)?'checked="checked"':''%>/>
+                          Randomized Answer
+                        </label>
+                      	</div>
+				    </div>
+				    <div class="form-group">
+				    	<div class="checkbox">
+                        <label>
+                          <input type="checkbox" id="show-answer-input" <%=(setup.showAnswer)?'checked="checked"':''%>/>
+                          Show Answer
+                        </label>
+                      	</div>
+				    </div>

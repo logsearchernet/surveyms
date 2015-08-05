@@ -53,8 +53,3 @@
   visibility : visible\9; /* Target only IE7 and IE8 with this hack */
   opacity    : 0.99;
 }
-
-.nano { width: 100$; height: 350px; }
-.nano .nano-content { padding: 3px; }
-.nano .nano-pane   { background: #888; }
-.nano .nano-slider { background: #111; }

@@ -9,14 +9,37 @@ $(document).ready(function(){
 	jsonData = initJsonData();
 	
 	renderJsonData(jsonData, currentPageIndex);
-	renderPagination(jsonData, currentPageIndex);
-	$(".nano").nanoScroller();
 	
 	$(document).on("keyup", "textarea#title-input" , function(e) {
 		   proname = $(this).val();
 		   console.log('proname='+proname)
 		   updateTitle(proname, jsonData);
 		   renderJsonData(jsonData, currentPageIndex);
+	});
+	$(document).on("change", "input#randomized-question-input" , function(e) {
+		if(this.checked) {
+			jsonData.setup.randomizedQuestion = true;
+		} else {
+			jsonData.setup.randomizedQuestion = false;
+		}
+		console.log(JSON.stringify(jsonData))
+		
+	});
+	$(document).on("click", "input#randomized-answer-input" , function(e) {
+		if(this.checked) {
+			jsonData.setup.randomizedAnswer = true;
+		} else {
+			jsonData.setup.randomizedAnswer = false;
+		}
+		console.log(JSON.stringify(jsonData))
+	});
+	$(document).on("click", "input#show-answer-input" , function(e) {
+		if(this.checked) {
+			jsonData.setup.showAnswer = true;
+		} else {
+			jsonData.setup.showAnswer = false;
+		}
+		console.log(JSON.stringify(jsonData))
 	});
 	
 	$(document).on("click", "div#title-edit" , function(e) {
@@ -159,7 +182,7 @@ $(document).ready(function(){
 	
 	$(document).on("click", "button.action-edit-item" , function(e) {
 		activaTab('tab_2')
-		renderQuestionSetting(jsonData, currentPageIndex);
+		renderJsonData(jsonData, currentPageIndex);
 		$(this).parent('div.question-editbar').prev().addClass('bg-maroon')
 	});
 	
@@ -276,6 +299,8 @@ $(document).ready(function(){
 		updateItemWithCol(itemsn, col, jsonData, currentPageIndex);
 		renderForm(jsonData, currentPageIndex);
 	});
+	
+	
 });
 
 
@@ -297,6 +322,8 @@ function commonQuestionTemplate(itemType, values, pageIndex){
 	console.log(JSON.stringify(jsonData))
 	
 	renderJsonData(jsonData, pageIndex);
+	
+//	/$("html, body").animate({ scrollTop: $(document).height() }, 1000);
 }
 
 function reorderParts(newParts, itemsnThis, data, pageIndex){
@@ -551,15 +578,25 @@ function renderJsonData(data, pageIndex){
 	renderQuestionSetting(data, pageIndex);
 	renderQuizSetting(data, pageIndex);
 	renderForm(data, pageIndex);
-	renderPagination(jsonData, currentPageIndex);
+	renderPagination(data, currentPageIndex);
+	renderNavQuestion(data.pages[pageIndex])
 
 	doSortParts(pageIndex);
 	doSortItems(pageIndex);
+	
+	$(".nano").nanoScroller();
+}
+
+function renderNavQuestion(data){
+	var msg = '';
+	msg += new EJS({url: basePath+'template/nav_questions.ejs'}).render(data);
+	$('#nav-question').html(msg);
 }
 
 function renderQuizSetting(data){
-	var title = data.setup.title;
-	$('textarea#title-input').val(title);
+	var msg = '';
+	msg += new EJS({url: basePath+'template/quiz_setting.ejs'}).render(data);
+	$('#tab_3').html(msg);
 }
 
 function renderQuestionSetting(data, pageIndex){
@@ -657,10 +694,9 @@ function initJsonData(){
 	data.formid = uuid();
 	var setup = new Object();
 	setup.title = 'YOUR TITLE';
-	setup.status = 1;
-	setup.filterTraffic = 2;
-	setup.jumpTo = 1;
-	setup.jumpToYourMainpage = 'http://';
+	setup.randomizedQuestion = false;
+	setup.randomizedAnswer = false;
+	setup.showAnswer = false;
 	data.setup = setup;
 	
 	data.pages = new Array(1);
@@ -722,6 +758,8 @@ function syntaxHighlight(json) {
         return '<span class="' + cls + '">' + match + '</span>';
     });
 }
+
+
 
 var uuid = (function () {
     var a = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".split("");

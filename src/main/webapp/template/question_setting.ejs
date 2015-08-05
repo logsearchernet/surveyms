@@ -1,4 +1,5 @@
-				<div class="form-group margin-right" itemsn="<%=itemsn%>">
+				
+				<div class="form-group margin-right itemsn="<%=itemsn%>">
 				
 					<%
 				    if (!(type == 'imageOnly' || type == 'textOnly')) {
@@ -55,13 +56,15 @@
 				   	%>
 				    
 				    <label for="question"><h4><strong><%=(type == 'radio' || type == 'checkbox')? 'Choice: ':''%></strong></h4></label>
+				    <div class="nano" style="height:150px;">
+					<div class="nano-content">
 				    <ul id="parts" class="list-unstyled connectedSortable">
 					<%
 					for (var i=0; parts!=null && i<parts.length; i++) {
 						var partsn = parts[i].partsn;
 						if (type == 'radio' || type == 'checkbox') {
 					%>
-					<li class="part" partsn="<%=partsn%>">
+					<li class="part margin-right" partsn="<%=partsn%>">
 						<div class="row margin-bottom part">
 					    	<div class="col-xs-1 padding-right-zero">
 					    		<button type="button" class="btn btn-link move-part padding-zero"><i class="fa fa-arrows fa-lg"></i></button>
@@ -83,6 +86,8 @@
 					} // end for
 					%>
 					</ul>
+					</div>
+					</div>
 					<%
 					if (type == 'radio' || type == 'checkbox') {
 					%>
@@ -128,4 +133,5 @@
 				    } // end if
 				    %>
 				 </div>
+				
 				    
