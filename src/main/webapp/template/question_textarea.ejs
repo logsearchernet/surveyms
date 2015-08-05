@@ -3,11 +3,27 @@
 						<div class="question-box">
 						<div class="form-group">
 							<label for="question"><%=question%></label>
+							
+							
+							<%
+							if (img != '') {
+							%>
+							<div class="thumbnail" style="position:relative;">
+								<img src="<%=img%>" width="100%"/>
+								<div class="hide" style="position:absolute;right:0; margin-top:-15px;">
+									<button type="button" class="btn btn-default action-remove-item-img"><i class="fa fa-close fa-lg"></i> Remove</button>
+								</div>	
+							</div>
+							<%
+							} // end if
+							%>
+							
+							
 							<%
 							for (var i=0; parts!=null &&  i<parts.length; i++) {
 							%>
 							<div class="text">
-								<textarea class="form-control" id="<%=parts[i].partsn%>" partsn="<%=parts[i].partsn%>" row="5"></textarea> 
+								<textarea class="form-control" id="<%=parts[i].partsn%>" partsn="<%=parts[i].partsn%>" rows="5"></textarea> 
 							</div>
 							<%
 							} // end for

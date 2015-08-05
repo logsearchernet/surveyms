@@ -16,7 +16,7 @@ $(document).ready(function(){
 		   proname = $(this).val();
 		   console.log('proname='+proname)
 		   updateTitle(proname, jsonData);
-		   renderJsonData(jsonData);
+		   renderJsonData(jsonData, currentPageIndex);
 	});
 	
 	$(document).on("click", "div#title-edit" , function(e) {
