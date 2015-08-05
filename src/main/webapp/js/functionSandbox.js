@@ -443,7 +443,7 @@ function updateItemWithImg(itemsnThis, imgThis, data, pageIndex){
 		var item = items[i];
 		var itemsn = item.itemsn;
 		if (itemsnThis == itemsn){
-			item.img = imgThis;
+			items[i].img = imgThis;
 			break;
 		}
 	}
@@ -629,9 +629,6 @@ function renderPagination(data, currentPageIndex) {
 function initJsonData(){
 	var data = new Object();
 	data.formid = uuid();
-	//data.title = dict['formTitle'];
-	//data.desc = dict['formDesc'];
-	
 	var setup = new Object();
 	setup.title = 'YOUR TITLE';
 	setup.status = 1;
