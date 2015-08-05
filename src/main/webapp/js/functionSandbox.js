@@ -2,11 +2,14 @@ var basePath='/quiz/';
 var jsonData;
 var currentItemsn;
 var currentPartsn;
+var currentPageIndex = 0;
 
 $(document).ready(function(){
 	
-	jsonData = createJsonData();
-	renderJsonData(jsonData);
+	jsonData = initJsonData();
+	
+	renderJsonData(jsonData, currentPageIndex);
+	renderPagination(jsonData, currentPageIndex);
 	$(".nano").nanoScroller();
 	
 	$(document).on("keyup", "textarea#title-input" , function(e) {
@@ -42,6 +45,18 @@ $(document).ready(function(){
 		$(this).removeClass('border-dashed')
 	});
 	
+	$(document).on("click", "button#newPage" , function(e) {
+		var page = createNewPage(jsonData);
+		currentPageIndex = jsonData.pages.length - 1;
+		renderJsonData(jsonData, currentPageIndex)
+		activaTab('tab_1');
+	});
+	
+	$(document).on("click", "span.page" , function(e) {
+		currentPageIndex = parseInt($(this).attr('pageindex'));
+		renderJsonData(jsonData, currentPageIndex)
+		activaTab('tab_1');
+	});
 	
 	$(document).on("click", "button#questionMultiple" , function(e) {
 		var itemType = 'radio';
@@ -49,7 +64,7 @@ $(document).ready(function(){
 		values.push('Your Option 1')
 		values.push('Your Option 2')
 		values.push('Your Option 3')
-		commonQuestionTemplate(itemType, values)
+		commonQuestionTemplate(itemType, values, currentPageIndex)
 	});
 	
 	$(document).on("click", "button#questionCheckbox" , function(e) {
@@ -58,7 +73,7 @@ $(document).ready(function(){
 		values.push('Your Option 1')
 		values.push('Your Option 2')
 		values.push('Your Option 3')
-		commonQuestionTemplate(itemType, values)
+		commonQuestionTemplate(itemType, values, currentPageIndex)
 	});
 	
 	$(document).on("click", "button#questionTrueFalse" , function(e) {
@@ -66,7 +81,7 @@ $(document).ready(function(){
 		var values = new Array(0);
 		values.push('True')
 		values.push('False')
-		commonQuestionTemplate(itemType, values)
+		commonQuestionTemplate(itemType, values, currentPageIndex)
 		
 	});
 	
@@ -74,7 +89,7 @@ $(document).ready(function(){
 		var itemType = 'textbox';
 		var values = new Array(0);
 		values.push('')
-		commonQuestionTemplate(itemType, values)
+		commonQuestionTemplate(itemType, values, currentPageIndex)
 		
 	});
 	
@@ -82,26 +97,26 @@ $(document).ready(function(){
 		var itemType = 'textarea';
 		var values = new Array(0);
 		values.push('')
-		commonQuestionTemplate(itemType, values)
+		commonQuestionTemplate(itemType, values, currentPageIndex)
 	});
 	
 	$(document).on("click", "button#questionImageOnly" , function(e) {
 		var itemType = 'imageOnly';
 		var values = new Array(0);
-		commonQuestionTemplate(itemType, values)
+		commonQuestionTemplate(itemType, values, currentPageIndex)
 	});
 	
 	$(document).on("click", "button#questionTextOnly" , function(e) {
 		var itemType = 'textOnly';
 		var values = new Array(0);
 		values.push('Some text here')
-		commonQuestionTemplate(itemType, values)
+		commonQuestionTemplate(itemType, values, currentPageIndex)
 	});
 	
 	$(document).on("click", "div.question-box" , function(e) {
 		activaTab('tab_2');
 		currentItemsn = $(this).closest('li.question').attr('itemsn');
-		renderQuestionSetting(jsonData);
+		renderQuestionSetting(jsonData, currentPageIndex);
 		$('div.question-box').each(function (e){
 			$(this).removeClass('bg-maroon'); 
 		});
@@ -110,35 +125,43 @@ $(document).ready(function(){
 	
 	$(document).on("click", "button#addNewOption" , function(e) {
 		var itemsn = $(this).attr('itemsn');
-		addPartOption(itemsn, jsonData)
+		addPartOption(itemsn, jsonData, currentPageIndex)
 		
-		renderJsonData(jsonData);
+		renderJsonData(jsonData, currentPageIndex);
 	});
 	
 	$(document).on("click", "button.removePart" , function(e) {
 		var partsn = $(this).attr('partsn');
-		removePart(currentItemsn, partsn, jsonData);
-		renderJsonData(jsonData);
+		removePart(currentItemsn, partsn, jsonData, currentPageIndex);
+		renderJsonData(jsonData, currentPageIndex);
 	});
 	
 	$(document).on("click", "button.action-remove-item" , function(e) {
 		
 		var itemsn = $(this).attr('itemsn');
-		removeItem(itemsn, jsonData);
-		renderJsonData(jsonData);
+		removeItem(itemsn, jsonData, currentPageIndex);
+		renderJsonData(jsonData, currentPageIndex);
+		activaTab('tab_1');
+	});
+	
+	$(document).on("click", "button.action-remove-page" , function(e) {
+		var pageindex = $(this).attr('pageindex');
+		removePage(pageindex, jsonData);
+		currentPageIndex = (pageindex==0)?0:pageindex - 1;
+		renderJsonData(jsonData, currentPageIndex);
 		activaTab('tab_1');
 	});
 	
 	$(document).on("click", "button.action-edit-item" , function(e) {
 		activaTab('tab_2')
-		renderQuestionSetting(jsonData);
+		renderQuestionSetting(jsonData, currentPageIndex);
 		$(this).parent('div.question-editbar').prev().addClass('bg-maroon')
 	});
 	
 	$(document).on("click", "button.action-duplicate-item" , function(e) {
 		var itemsn = $(this).closest('li.question').attr('itemsn');
-		duplicateItem(itemsn, jsonData);
-		renderJsonData(jsonData);
+		duplicateItem(itemsn, jsonData, currentPageIndex);
+		renderJsonData(jsonData, currentPageIndex);
 	});
 	
 	$(document).on("keyup", "div#question-input" , function(e) {
@@ -146,9 +169,9 @@ $(document).ready(function(){
 		   var proname = $(this).html();
 		   currentItemsn = $(this).closest('.form-group').attr('itemsn');
 		   console.log('proname='+proname)
-		   updateItem(currentItemsn, proname, jsonData);
+		   updateItem(currentItemsn, proname, jsonData, currentPageIndex);
 		   console.log(JSON.stringify(jsonData))
-		   renderForm(jsonData);
+		   renderForm(jsonData, currentPageIndex);
 		   
 	});
 	
@@ -157,9 +180,9 @@ $(document).ready(function(){
 		   currentPartsn = $(this).attr('partsn');
 		   currentItemsn = $(this).closest('.form-group').attr('itemsn');
 		   console.log('proname='+proname)
-		   updatePart(currentItemsn, currentPartsn, proname, jsonData);
+		   updatePart(currentItemsn, currentPartsn, proname, jsonData, currentPageIndex);
 		   console.log(JSON.stringify(jsonData))
-		   renderForm(jsonData);
+		   renderForm(jsonData, currentPageIndex);
 	});
 	
 	$(document).on("click", "button.action-wysiwyg" , function(e) {
@@ -179,8 +202,8 @@ $(document).ready(function(){
 	    oFReader.readAsDataURL(file);
 	    oFReader.onload = function (oFREvent) {
 	    	var imgSrc = oFREvent.target.result;
-	    	updatePartWithImg(itemsn, partsn, imgSrc, jsonData);
-	    	renderForm(jsonData);
+	    	updatePartWithImg(itemsn, partsn, imgSrc, jsonData, currentPageIndex);
+	    	renderForm(jsonData, currentPageIndex);
 	    };
 	    //uploadFile(file)
 	});
@@ -197,21 +220,21 @@ $(document).ready(function(){
 	    oFReader.readAsDataURL(file);
 	    oFReader.onload = function (oFREvent) {
 	    	var imgSrc = oFREvent.target.result;
-	    	updateItemWithImg(itemsn, imgSrc, jsonData);
-	    	renderForm(jsonData);
+	    	updateItemWithImg(itemsn, imgSrc, jsonData, currentPageIndex);
+	    	renderForm(jsonData, currentPageIndex);
 	    };
 	});
 	$(document).on("click", "button.action-remove-item-img" , function(e) {
 		var itemsn = $(this).closest('li.question').attr('itemsn');
-		updateItemWithImg(itemsn, '', jsonData)
-		renderForm(jsonData);
+		updateItemWithImg(itemsn, '', jsonData, currentPageIndex)
+		renderForm(jsonData, currentPageIndex);
 	});
 	
 	$(document).on("click", "button.action-remove-part-img" , function(e) {
 		var itemsn = $(this).closest('li.question').attr('itemsn');
 		var partsn = $(this).attr('partsn');
-		updatePartWithImg(itemsn, partsn, '', jsonData)
-		renderForm(jsonData);
+		updatePartWithImg(itemsn, partsn, '', jsonData, currentPageIndex)
+		renderForm(jsonData, currentPageIndex);
 	});
 	
 	$(document).on("mouseover", "div.thumbnail" , function(e) {
@@ -231,13 +254,13 @@ $(document).ready(function(){
 	$(document).on("click", "select.optionColumn" , function(e) {
 		var col = $(this).val();
 		var itemsn = $(this).closest('div.form-group').attr('itemsn');
-		updateItemWithCol(itemsn, col, jsonData);
-		renderForm(jsonData);
+		updateItemWithCol(itemsn, col, jsonData, currentPageIndex);
+		renderForm(jsonData, currentPageIndex);
 	});
 });
 
 
-function commonQuestionTemplate(itemType, values){
+function commonQuestionTemplate(itemType, values, pageIndex){
 	var question = 'Question here?';
 	var item = createItem(question, itemType);
 	item.parts = new Array(0);
@@ -247,15 +270,18 @@ function commonQuestionTemplate(itemType, values){
 	}
 
 	currentItemsn = item.itemsn;
-	jsonData.pages[0].items.push(item);
+	if (jsonData.pages[pageIndex].items == null){
+		jsonData.pages[pageIndex].items = new Array(0);
+	}
+	jsonData.pages[pageIndex].items.push(item);
 	
 	console.log(JSON.stringify(jsonData))
 	
-	renderJsonData(jsonData);
+	renderJsonData(jsonData, pageIndex);
 }
 
-function reorderParts(newParts, itemsnThis, data){
-	var items = data.pages[0].items;
+function reorderParts(newParts, itemsnThis, data, pageIndex){
+	var items = data.pages[pageIndex].items;
 	for (var i = 0; i < items.length; i++) {
 		var item = items[i];
 		var itemsn = item.itemsn;
@@ -276,12 +302,12 @@ function reorderParts(newParts, itemsnThis, data){
 	}
 }
 
-function reorderItems(newItems, data){
-	data.pages[0].items = newItems.slice();
+function reorderItems(newItems, data, pageIndex){
+	data.pages[pageIndex].items = newItems.slice();
 }
 
-function addPartOption(itemsnThis, data){
-	var items = data.pages[0].items;
+function addPartOption(itemsnThis, data, pageIndex){
+	var items = data.pages[pageIndex].items;
 	for (var i = 0; i < items.length; i++) {
 		var item = items[i];
 		var itemsn = item.itemsn;
@@ -314,7 +340,7 @@ function removePart(itemsnThis, partsnThis, data){
 	}
 }
 
-function duplicateItem(itemsnThis, data){
+function duplicateItem(itemsnThis, data, pageIndex){
 	var items = data.pages[0].items;
 	for (var i = 0; i < items.length; i++) {
 		var item = items[i];
@@ -329,31 +355,35 @@ function duplicateItem(itemsnThis, data){
 				newPart.img = part.img;
 				newItem.parts.push(newPart);
 			}
-			data.pages[0].items.splice(i, 0, newItem);
+			data.pages[pageIndex].items.splice(i, 0, newItem);
 			break;
 		}
 	}
 }
 
-function removeItem(itemsnThis, data){
-	var items = data.pages[0].items;
+function removeItem(itemsnThis, data, pageIndex){
+	var items = data.pages[pageIndex].items;
 	for (var i = 0; i < items.length; i++) {
 		var item = items[i];
 		var itemsn = item.itemsn;
 		if (itemsnThis == itemsn){
-			data.pages[0].items.splice(i,1);
+			data.pages[pageIndex].items.splice(i,1);
 			console.log('removeItem='+ JSON.stringify(data))
 			break;
 		}
 	}
 }
 
+function removePage(pageindexTHis, data){
+	data.pages.splice(pageindexTHis,1);
+}
+
 function  updateTitle(proname, data){
 	data.setup.title = proname;
 }
 
-function updatePart(itemsnThis, partsnThis, valueThis, data){
-	var items = data.pages[0].items;
+function updatePart(itemsnThis, partsnThis, valueThis, data, pageIndex){
+	var items = data.pages[pageIndex].items;
 	for (var i = 0; i < items.length; i++) {
 		var item = items[i];
 		var itemsn = item.itemsn;
@@ -371,8 +401,8 @@ function updatePart(itemsnThis, partsnThis, valueThis, data){
 	}
 }
 
-function updatePartWithImg(itemsnThis, partsnThis, imgThis, data){
-	var items = data.pages[0].items;
+function updatePartWithImg(itemsnThis, partsnThis, imgThis, data, pageIndex){
+	var items = data.pages[pageIndex].items;
 	for (var i = 0; i < items.length; i++) {
 		var item = items[i];
 		var itemsn = item.itemsn;
@@ -390,8 +420,8 @@ function updatePartWithImg(itemsnThis, partsnThis, imgThis, data){
 	}
 }
 
-function updateItem(itemsnThis, questionThis, data){
-	var items = data.pages[0].items;
+function updateItem(itemsnThis, questionThis, data, pageIndex){
+	var items = data.pages[pageIndex].items;
 	for (var i = 0; i < items.length; i++) {
 		var item = items[i];
 		var itemsn = item.itemsn;
@@ -402,8 +432,8 @@ function updateItem(itemsnThis, questionThis, data){
 	}
 }
 
-function updateItemWithImg(itemsnThis, imgThis, data){
-	var items = data.pages[0].items;
+function updateItemWithImg(itemsnThis, imgThis, data, pageIndex){
+	var items = data.pages[pageIndex].items;
 	for (var i = 0; i < items.length; i++) {
 		var item = items[i];
 		var itemsn = item.itemsn;
@@ -414,8 +444,8 @@ function updateItemWithImg(itemsnThis, imgThis, data){
 	}
 }
 
-function updateItemWithCol(itemsnThis, colThis, data){
-	var items = data.pages[0].items;
+function updateItemWithCol(itemsnThis, colThis, data, pageIndex){
+	var items = data.pages[pageIndex].items;
 	for (var i = 0; i < items.length; i++) {
 		var item = items[i];
 		var itemsn = item.itemsn;
@@ -430,7 +460,7 @@ function activaTab(tab){
     $('.nav-tabs a[href="#' + tab + '"]').tab('show');
 };
 
-function doSortParts(){
+function doSortParts(pageIndex){
     $("#parts").sortable({
     	handle:'button.movePart',
     	cancel: '',
@@ -447,14 +477,14 @@ function doSortParts(){
         		newParts.push(part);
     		});
 
-    		reorderParts(newParts, itemsn, jsonData);
-    		renderJsonData(jsonData);
+    		reorderParts(newParts, itemsn, jsonData, pageIndex);
+    		renderJsonData(jsonData, pageIndex);
 
     	}
     });
 }
 
-function doSortItems(){
+function doSortItems(pageIndex){
     $("#questions").sortable({
     	handle:'button.action-move-item',
     	cancel: '',
@@ -468,14 +498,14 @@ function doSortItems(){
     			newItems.push(item);
     		});
     		reorderItems(newItems, jsonData);
-    		renderJsonData(jsonData);
+    		renderJsonData(jsonData, pageIndex);
 
     	}
     });
 }
 
-function getItemObject(itemsnThis, data){
-	var items = data.pages[0].items;
+function getItemObject(itemsnThis, data, pageIndex){
+	var items = data.pages[pageIndex].items;
 	for (var i = 0; i < items.length; i++) {
 		var item = items[i];
 		var itemsn = item.itemsn;
@@ -485,14 +515,15 @@ function getItemObject(itemsnThis, data){
 	}
 	return null;}
 
-function renderJsonData(data){
+function renderJsonData(data, pageIndex){
 	
-	renderQuestionSetting(data);
-	renderQuizSetting(data);
-	renderForm(data);
+	renderQuestionSetting(data, pageIndex);
+	renderQuizSetting(data, pageIndex);
+	renderForm(data, pageIndex);
+	renderPagination(jsonData, currentPageIndex);
 
-	doSortParts();
-	doSortItems();
+	doSortParts(pageIndex);
+	doSortItems(pageIndex);
 }
 
 function renderQuizSetting(data){
@@ -500,9 +531,10 @@ function renderQuizSetting(data){
 	$('textarea#title-input').val(title);
 }
 
-function renderQuestionSetting(data){
+function renderQuestionSetting(data, pageIndex){
+	if (data.pages.length < 1) return;
 	$('#tab_2').children().remove();
-	var items = data.pages[0].items;
+	var items = data.pages[pageIndex].items;
 	for (var i = 0; items!=null && i < items.length; i++) {
 		var item = items[i];
 		var itemsn = item.itemsn;
@@ -544,12 +576,13 @@ function renderQuestionSetting(data){
 	
 }
 
-function renderForm(data){
+function renderForm(data, pageIndex){
+	if (data.pages.length < 1) return;
 	$('#questions').children().remove();
 	var title = data.setup.title;
 	$('#title').text(title);
-	var items = data.pages[0].items;
-	for (var i = 0; i < items.length; i++) {
+	var items = data.pages[pageIndex].items;
+	for (var i = 0; items != null && i < items.length; i++) {
 		var item = items[i];
 		console.log(JSON.stringify(item));
 		
@@ -578,7 +611,17 @@ function renderForm(data){
 	}
 }
 
-function createJsonData(){
+function renderPagination(data, currentPageIndex) {
+	if (data.pages.length < 1) return;
+	var obj = new Object();
+	obj = data;
+	obj.currentPageIndex = currentPageIndex;
+	var msg = '';
+	msg += new EJS({url: basePath+'template/page.ejs'}).render(obj);
+	$('#pages').html(msg);
+}
+
+function initJsonData(){
 	var data = new Object();
 	data.formid = uuid();
 	//data.title = dict['formTitle'];
@@ -600,6 +643,14 @@ function createJsonData(){
 	return data;
 }
 
+function createNewPage(data){
+	var page = new Object();
+	page.pagesn =  uuid();
+	data.pages.push(page);
+	
+	return page;
+}
+
 function createItem(question, type){
 	var item = new Object();
 	item.itemsn = uuid();
@@ -619,6 +670,8 @@ function createPartOptionMultiple(value){
 	
 	return part;
 }
+
+
 
 function syntaxHighlight(json) {
     json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
