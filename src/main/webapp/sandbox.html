@@ -8,7 +8,7 @@
 <link rel="stylesheet" type="text/css" href="css/AdminLTE.css"/>
 <link rel="stylesheet" type="text/css" href="css/font-awesome.css"/>
 <link rel="stylesheet" type="text/css" href="css/nanoscroller.css"/>
-<link rel="stylesheet" type="text/css" href="css/common.css"/>
+<link rel="stylesheet" type="text/css" href="css/main.css"/>
 
 <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui.js"></script>
@@ -55,20 +55,15 @@
 						<a class="btn btn-app bg-maroon action-delete pull-right"><i class="fa fa-trash-o"></i> Delete</a>
 					</div>
 				</div>
-			<div class="side-bar" style="width:500px; position:fixed;margin-left:100px;">
+			<div id="sidebar-div" class="side-bar" style="width:500px; position:fixed;margin-left:100px;">
 			<div class="nav-tabs-custom padding">
-				
-				<!-- <div class="row margin-bottom margin-right">
-                    <div class="col-xs-6 "><button type="button" id="newPage" class="btn btn-block btn-default bg-olive"><i class="fa fa-plus-square"></i> Create New Page</button></div>
-                    <div class="col-xs-6 "></div>
-                </div> -->
 				
                 <ul class="nav nav-tabs">
                   <li class="active"><a href="#tab_1" data-toggle="tab">Add a Question</a></li>
                   <li><a href="#tab_2" data-toggle="tab">Question Settings</a></li>
                   <li><a href="#tab_3" data-toggle="tab">Quiz Setting</a></li>
                   <li>
-                  	<button type="button" id="newPage" class="btn btn-block btn-default pull-right bg-olive"><i class="fa fa-plus-square"></i> New Page</button>
+                  	<button type="button" id="newPage" class="btn btn-block btn-default pull-right bg-olive" data-toggle="tooltip" data-placement="bottom" title="Create a New Page"><i class="fa fa-plus-square"></i> New Page</button>
                   </li>
                 </ul>
                 <div class="tab-content">
@@ -92,7 +87,7 @@
                     <hr style="width: 90%; margin-left:11px;margin-right:11px;">
                     <label>Other Options</label>
                     <div class="row margin-top margin-right">
-                    	<div class="col-xs-6"><button type="button" id="managePoint" class="btn btn-block btn-default"><i class="fa fa-list"></i> Manage Point</button></div>
+                    	<div class="col-xs-6"><button type="button" id="managepoint" class="btn btn-block btn-default"><i class="fa fa-list"></i> Manage Point</button></div>
                     	<div class="col-xs-6"></div>
                     </div>
                   </div><!-- /.tab-pane -->
@@ -107,7 +102,7 @@
                 </div><!-- /.tab-content -->
               </div>
 		</div>
-		<div style="width:600px;margin-left:630px;position: relative;">
+		<div id="form-div" style="width:600px;margin-left:630px;position: relative;">
 			
 			<div id="pages" class="row">
 				
@@ -121,15 +116,19 @@
 			<div id="nav-questions">
 				
 			</div>
-			<ol id="questions" class="padding-left-zero">
+			<ol id="questions" class="padding-left-zero list-unstyled">
 		
 
 			</ol>
 			
 		</div>
-		
+		<div id="managepoint-div" style="width:1000px;position: relative;margin: 0 auto 0 auto; height:500px; background-color: red;display:none;">
+			<button id="managepoint-close">Back</button>
+		</div>
 		
 	</div>
+	
+	
 </div>
 
 

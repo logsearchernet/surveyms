@@ -84,18 +84,18 @@ $(document).ready(function(){
 	$(document).on("click", "button#questionMultiple" , function(e) {
 		var itemType = 'radio';
 		var values = new Array(0);
-		values.push('Your Option 1')
-		values.push('Your Option 2')
-		values.push('Your Option 3')
+		values.push('My Option 1')
+		values.push('My Option 2')
+		values.push('My Option 3')
 		commonQuestionTemplate(itemType, values, currentPageIndex)
 	});
 	
 	$(document).on("click", "button#questionCheckbox" , function(e) {
 		var itemType = 'checkbox';
 		var values = new Array(0);
-		values.push('Your Option 1')
-		values.push('Your Option 2')
-		values.push('Your Option 3')
+		values.push('My Option 1')
+		values.push('My Option 2')
+		values.push('My Option 3')
 		commonQuestionTemplate(itemType, values, currentPageIndex)
 	});
 	
@@ -304,15 +304,32 @@ $(document).ready(function(){
 		var aid = $(this).attr('itemsn');
 		var aTag = $("li[itemsn='"+ aid +"']");
 		var s = aTag.offset().top - 178
-		console.log(s)
+		
 	    $('html,body').animate({scrollTop: s},'slow');
+	});
+	
+	$(document).on("click", "button#managepoint" , function(e) {
+		$('div#sidebar-div').hide();
+		$('div#form-div').hide();
+		$('div#managepoint-div').show();
+	});
+	
+	$(document).on("click", "button#managepoint-close" , function(e) {
+		$('div#sidebar-div').show();
+		$('div#form-div').show();
+		$('div#managepoint-div').hide();
+	});
+	
+	$(document).on("change", "input.answer-input" , function(e) {
+		var checked = this.checked;
+		var itemsn = $(this).closest('li.question').attr('itemsn');
+		var partsn = $(this).attr('partsn');
+		updateItemWithAnswer(itemsn, partsn, checked,  jsonData, currentPageIndex);
+		renderForm(jsonData, currentPageIndex)
+		console.log(JSON.stringify(jsonData))
 	});
 });
 
-function scrollToAnchor(aid){
-    var aTag = $("a[name='"+ aid +"']");
-    $('html,body').animate({scrollTop: aTag.offset().top},'slow');
-}
 
 function commonQuestionTemplate(itemType, values, pageIndex){
 	var question = 'Question here?';
@@ -333,7 +350,10 @@ function commonQuestionTemplate(itemType, values, pageIndex){
 	
 	renderJsonData(jsonData, pageIndex);
 	
-//	/$("html, body").animate({ scrollTop: $(document).height() }, 1000);
+	// scroll to Question
+	var aTag = $("li[itemsn='"+ currentItemsn +"']");
+	var s = aTag.offset().top - 178
+    $('html,body').animate({scrollTop: s},'slow');
 }
 
 function reorderParts(newParts, itemsnThis, data, pageIndex){
@@ -369,7 +389,7 @@ function addPartOption(itemsnThis, data, pageIndex){
 		var itemsn = item.itemsn;
 		if (itemsnThis == itemsn){
 			var parts = item.parts;
-			parts.push(createPartOptionMultiple('your new option'));
+			parts.push(createPartOptionMultiple('My new option'));
 		}
 	}
 }
@@ -524,6 +544,30 @@ function updateItemWithCol(itemsnThis, colThis, data, pageIndex){
 	}
 }
 
+function updateItemWithAnswer(itemsnThis, partsnThis, checkedThis, data, pageIndex){
+	var items = data.pages[pageIndex].items;
+	for (var i = 0; i < items.length; i++) {
+		var item = items[i];
+		var type= item.type;
+		var itemsn = item.itemsn;
+		if (itemsnThis == itemsn){
+			var parts = item.parts;
+			for (var j = 0; j < parts.length; j++) {
+				var part = parts[j]
+				var partsn = part.partsn;
+				if (partsn == partsnThis){
+					data.pages[pageIndex].items[i].parts[j].ans=checkedThis;
+				} else {
+					if (type == 'radio' || type == 'truefalse') {
+						data.pages[pageIndex].items[i].parts[j].ans=false;
+					}
+				}
+			}
+			
+		}
+	}
+}
+
 function activaTab(tab){
     $('.nav-tabs a[href="#' + tab + '"]').tab('show');
 };
@@ -595,6 +639,7 @@ function renderJsonData(data, pageIndex){
 	doSortItems(pageIndex);
 	
 	$(".nano").nanoScroller();
+	$('[data-toggle="tooltip"]').tooltip()
 }
 
 function renderNavQuestion(data){
@@ -659,27 +704,36 @@ function renderForm(data, pageIndex){
 	$('#questions').children().remove();
 	var title = data.setup.title;
 	$('#title').text(title);
+	
+	var count = 1;
 	var items = data.pages[pageIndex].items;
 	for (var i = 0; items != null && i < items.length; i++) {
 		var item = items[i];
+		
 		console.log(JSON.stringify(item));
 		
-		var editbar = new EJS({url: basePath+'template/question-editbar.ejs'}).render(item);
-		
 		var msg = '';
+		var editbar = new EJS({url: basePath+'template/question-editbar.ejs'}).render(item);
 		if (item.type == 'radio') {
+			item.count = count++;
 			msg += new EJS({url: basePath+'template/question_multiple.ejs'}).render(item);
-		} else if (item.type == 'checkbox'){
+		} else if (item.type == 'checkbox') {
+			item.count = count++;
 			msg += new EJS({url: basePath+'template/question_multiple.ejs'}).render(item);
 		} else if (item.type == 'truefalse'){
+			item.count = count++;
 			msg += new EJS({url: basePath+'template/question_truefalse.ejs'}).render(item);
 		} else if (item.type == 'textbox'){
+			item.count = count++;
 			msg += new EJS({url: basePath+'template/question_textbox.ejs'}).render(item);
 		} else if (item.type == 'textarea'){
+			item.count = count++;
 			msg += new EJS({url: basePath+'template/question_textarea.ejs'}).render(item);
 		} else if (item.type == 'imageOnly'){
+			item.count = null;
 			msg += new EJS({url: basePath+'template/imageOnly.ejs'}).render(item);
 		} else if (item.type == 'textOnly'){
+			item.count = null;
 			msg += new EJS({url: basePath+'template/textOnly.ejs'}).render(item);
 		} 
 		
@@ -703,7 +757,7 @@ function initJsonData(){
 	var data = new Object();
 	data.formid = uuid();
 	var setup = new Object();
-	setup.title = 'YOUR TITLE';
+	setup.title = 'MY TITLE';
 	setup.randomizedQuestion = false;
 	setup.randomizedAnswer = false;
 	setup.showAnswer = false;
@@ -744,6 +798,7 @@ function createPartOptionMultiple(value){
 	part.partsn = uuid();
 	part.value = value;
 	part.img = '';
+	part.ans = false;
 	
 	return part;
 }

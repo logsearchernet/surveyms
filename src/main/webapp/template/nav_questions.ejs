@@ -1,13 +1,18 @@
 
-<div class="nano" style="position: fixed;left:1530px; height: 400px;width: 50px;">
+<div class="nano" style="position: fixed;left:1530px; height: 400px;width: 60px;">
 <div class="nano-content">
 <%
+var count = 1;
 for (var i=0; items!=null && i<items.length; i++) {
+	if (!(items[i].type == 'imageOnly' || items[i].type == 'textOnly')) {
+				   
 %>
 <div>
-	<span class="badge nav-question" itemsn="<%=items[i].itemsn%>">Q <%=(i+1)%></span>
+	<span class="badge nav-question" title="Goto Question <%=count%>" itemsn="<%=items[i].itemsn%>">Q <%=count%></span>
 </div>
 <%
+	count++
+ 	}
 }
 %>
 </div>

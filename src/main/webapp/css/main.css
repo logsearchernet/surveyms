@@ -28,7 +28,7 @@ body {
 }
 .question-editbar {
 	margin-top: -30px;
-	margin-left:330px; 
+	margin-left:10px; 
 	position: absolute;
 }
 
@@ -98,7 +98,9 @@ body {
     margin: auto;
 }
 
-
+.nav-question {
+	cursor: pointer;
+}
 
 
 

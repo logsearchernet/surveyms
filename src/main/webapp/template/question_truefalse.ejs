@@ -2,7 +2,7 @@
 					<li itemsn="<%=itemsn%>" class="question">
 						<div class="question-box">
 						<div class="form-group">
-							<label for="question"><%=question%></label>
+							<label for="question"><%=count%>. <%=question%></label>
 							
 							
 							<%
@@ -24,7 +24,7 @@
 							%>
 							<div class="radio">
 								<label> 
-								<input type="radio" id="<%=parts[i].partsn%>" value="<%=parts[i].partsn%>" partsn="<%=parts[i].partsn%>"/> 
+								<input type="radio" class="answer-input" id="<%=parts[i].partsn%>" partsn="<%=parts[i].partsn%>" <%=(parts[i].ans == true)?'checked="checked"':''%>/> 
 								<%=parts[i].value%>
 								</label>
 							</div>
