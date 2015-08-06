@@ -8,6 +8,7 @@
 <link rel="stylesheet" type="text/css" href="css/AdminLTE.css"/>
 <link rel="stylesheet" type="text/css" href="css/font-awesome.css"/>
 <link rel="stylesheet" type="text/css" href="css/nanoscroller.css"/>
+<link rel="stylesheet" type="text/css" href="css/hover.css"/>
 <link rel="stylesheet" type="text/css" href="css/main.css"/>
 
 <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
@@ -43,16 +44,16 @@
 	<div class="row" style="width:1200px;">
 			<div style="width:100px; position:fixed;">
 					<div class="col-xs-12">
-						<a class="btn btn-app bg-olive action-save pull-right"><i class="fa fa-floppy-o"></i> Save</a>
+						<a class="btn btn-app bg-olive action-save pull-right hvr-pulse"><i class="fa fa-floppy-o"></i> Save</a>
 					</div>
 					<div class="col-xs-12">
-						<a class="btn btn-app action-dashboard bg-purple pull-right"><i class="fa fa-tachometer"></i> Dashboad</a>
+						<a class="btn btn-app action-dashboard bg-purple pull-right hvr-pulse"><i class="fa fa-tachometer"></i> Dashboad</a>
 					</div>
 					<div class="col-xs-12">
-						<a class="btn btn-app action-share bg-orange pull-right"><i class="fa fa-share-alt"></i> Share</a>
+						<a class="btn btn-app action-share bg-orange pull-right hvr-pulse"><i class="fa fa-share-alt"></i> Share</a>
 					</div>
 					<div class="col-xs-12">
-						<a class="btn btn-app bg-maroon action-delete pull-right"><i class="fa fa-trash-o"></i> Delete</a>
+						<a class="btn btn-app bg-maroon action-delete pull-right hvr-pulse"><i class="fa fa-trash-o"></i> Delete</a>
 					</div>
 				</div>
 			<div id="sidebar-div" class="side-bar" style="width:500px; position:fixed;margin-left:100px;">
@@ -62,26 +63,27 @@
                   <li class="active"><a href="#tab_1" data-toggle="tab">Add a Question</a></li>
                   <li><a href="#tab_2" data-toggle="tab">Question Settings</a></li>
                   <li><a href="#tab_3" data-toggle="tab">Quiz Setting</a></li>
-                  <li>
-                  	<button type="button" id="newPage" class="btn btn-block btn-default pull-right bg-olive" data-toggle="tooltip" data-placement="bottom" title="Create a New Page"><i class="fa fa-plus-square"></i> New Page</button>
-                  </li>
                 </ul>
                 <div class="tab-content">
                   <div class="tab-pane active" id="tab_1" style="right:0;">
+                  	<div class="row margin-top margin-right">
+                  		<div class="col-xs-6"><button type="button" id="newPage" class="btn btn-block btn-default pull-right bg-olive hvr-float-shadow" data-toggle="tooltip" data-placement="top" title="Create a New Page"><i class="fa fa-plus-square"></i> New Page</button></div>
+                  		
+                  	</div>
                     <div class="row margin-top margin-right">
-                    	<div class="col-xs-6 "><button type="button" id="questionMultiple" class="btn btn-block btn-default"><i class="fa fa-dot-circle-o"></i> Multiple Choice</button></div>
-                    	<div class="col-xs-6 "><button type="button" id="questionCheckbox" class="btn btn-block btn-default"><i class="fa fa-check-square-o"></i> Checkbox</button></div>
+                    	<div class="col-xs-6"><button type="button" id="questionMultiple" class="btn btn-block btn-default hvr-sweep-to-right"><i class="fa fa-dot-circle-o"></i> Multiple Choice</button></div>
+                    	<div class="col-xs-6"><button type="button" id="questionCheckbox" class="btn btn-block btn-default hvr-sweep-to-right"><i class="fa fa-check-square-o"></i> Checkbox</button></div>
                     </div>
                     <div class="row margin-top margin-right">
-                    	<div class="col-xs-6"><button type="button" id="questionTrueFalse" class="btn btn-block btn-default"><i class="fa fa-dot-circle-o"></i> True/False</button></div>
-                    	<div class="col-xs-6"><button type="button" id="questionTextbox" class="btn btn-block btn-default"><i class="fa fa-minus-square-o"></i> Fill in the blank</button></div>
+                    	<div class="col-xs-6"><button type="button" id="questionTrueFalse" class="btn btn-block btn-default hvr-sweep-to-right"><i class="fa fa-dot-circle-o"></i> True/False</button></div>
+                    	<div class="col-xs-6"><button type="button" id="questionTextbox" class="btn btn-block btn-default hvr-sweep-to-right"><i class="fa fa-minus-square-o"></i> Fill in the blank</button></div>
                     </div>
                     <div class="row margin-top margin-right">
-                    	<div class="col-xs-6"><button type="button" id="questionEssay" class="btn btn-block btn-default"><i class="fa fa-pencil"></i> Essay</button></div>
-                    	<div class="col-xs-6"><button type="button" id="questionTextOnly" class="btn btn-block btn-default"><i class="fa fa-file-word-o"></i> Text Only</button></div>
+                    	<div class="col-xs-6"><button type="button" id="questionEssay" class="btn btn-block btn-default hvr-sweep-to-right"><i class="fa fa-pencil"></i> Essay</button></div>
+                    	<div class="col-xs-6"><button type="button" id="questionTextOnly" class="btn btn-block btn-default hvr-sweep-to-right"><i class="fa fa-file-word-o"></i> Text Only</button></div>
                     </div>
                     <div class="row margin-top margin-right">
-                    	<div class="col-xs-6"><button type="button" id="questionImageOnly" class="btn btn-block btn-default"><i class="fa fa-file-photo-o"></i> Image Only</button></div>
+                    	<div class="col-xs-6"><button type="button" id="questionImageOnly" class="btn btn-block btn-default hvr-sweep-to-right"><i class="fa fa-file-photo-o"></i> Image Only</button></div>
                     	<div class="col-xs-6"></div>
                     </div>
                     <hr style="width: 90%; margin-left:11px;margin-right:11px;">
