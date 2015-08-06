@@ -74,6 +74,10 @@ body {
 	border: 1px dashed orange;
 }
 
+.td-padding {
+	padding:3px;
+}
+
 .print-json {outline: 1px solid #ccc; padding: 5px; margin: 5px; height: 100%; }
 .string { color: green; }
 .number { color: darkorange; }

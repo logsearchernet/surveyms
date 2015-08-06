@@ -322,11 +322,20 @@ $(document).ready(function(){
 	
 	$(document).on("change", "input.answer-input" , function(e) {
 		var checked = this.checked;
-		var itemsn = $(this).closest('li.question').attr('itemsn');
+		var itemsn = $(this).attr('itemsn');
 		var partsn = $(this).attr('partsn');
-		updateItemWithAnswer(itemsn, partsn, checked,  jsonData, currentPageIndex);
-		renderForm(jsonData, currentPageIndex)
-		console.log(JSON.stringify(jsonData))
+		updateItemWithAnswer(itemsn, partsn, checked, jsonData, currentPageIndex);
+		renderJsonData(jsonData, currentPageIndex)
+	});
+	
+	$(document).on("keyup", "input.answer-text-input" , function(e) {
+		var itemsn = $(this).closest('.form-group').attr('itemsn');
+		var partsn = $(this).attr('partsn');
+		var text = $(this).val();
+		updateItemWithAnswerText(itemsn, partsn, text, jsonData, currentPageIndex);
+		renderJsonData(jsonData, currentPageIndex)
+		$('input.answer-text-input').val(text)
+		$('input.answer-text-input').focus();
 	});
 });
 
@@ -568,6 +577,34 @@ function updateItemWithAnswer(itemsnThis, partsnThis, checkedThis, data, pageInd
 	}
 }
 
+function updateItemWithAnswerText(itemsnThis, partsnThis, textThis, data, pageIndex) {
+	var items = data.pages[pageIndex].items;
+	for (var i = 0; i < items.length; i++) {
+		var item = items[i];
+		var type= item.type;
+		var itemsn = item.itemsn;
+		if (itemsnThis == itemsn){
+			var parts = item.parts;
+			for (var j = 0; j < parts.length; j++) {
+				var part = parts[j]
+				var partsn = part.partsn;
+				if (partsn == partsnThis){
+					data.pages[pageIndex].items[i].parts[j].ans=true;
+					data.pages[pageIndex].items[i].parts[j].ansText=textThis;
+				} else {
+					if (type == 'textbox') {
+						data.pages[pageIndex].items[i].parts[j].ans=false;
+						data.pages[pageIndex].items[i].parts[j].ansText='';
+					} 
+				}
+			}
+			
+		}
+	}
+}
+
+
+
 function activaTab(tab){
     $('.nav-tabs a[href="#' + tab + '"]').tab('show');
 };
@@ -722,7 +759,8 @@ function renderForm(data, pageIndex){
 			msg += new EJS({url: basePath+'template/question_multiple.ejs'}).render(item);
 		} else if (item.type == 'truefalse'){
 			item.count = count++;
-			msg += new EJS({url: basePath+'template/question_truefalse.ejs'}).render(item);
+			//msg += new EJS({url: basePath+'template/question_truefalse.ejs'}).render(item);
+			msg += new EJS({url: basePath+'template/question_multiple.ejs'}).render(item);
 		} else if (item.type == 'textbox'){
 			item.count = count++;
 			msg += new EJS({url: basePath+'template/question_textbox.ejs'}).render(item);
@@ -799,6 +837,7 @@ function createPartOptionMultiple(value){
 	part.value = value;
 	part.img = '';
 	part.ans = false;
+	part.ansText = '';
 	
 	return part;
 }

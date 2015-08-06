@@ -1,137 +1,172 @@
-				
-				<div class="form-group margin-right" itemsn="<%=itemsn%>">
-				
+
+<div class="form-group margin-right" itemsn="<%=itemsn%>">
+
+	<%
+    if (!(type == 'imageOnly' || type == 'textOnly')) {
+    %>
+    <label for="question"><h4><strong>Question: </strong></h4></label>
+    <div class="btn-group pull-right padding-bottom">
+          <button type="button" class="btn btn-default uploadItemPhoto"><i class="fa fa-file-photo-o"></i></button>
+          <input type="file" class="fileItemInput hide" itemsn="<%=itemsn%>"/>
+          <button type="button" class="btn btn-default action-remove-item" itemsn="<%=itemsn%>"><i class="fa fa-trash-o"></i></button>
+    </div>
+   
+   <div class="padding" style="width: 100%; height: 100px;border:1px solid #000;overflow:auto;" contenteditable="true" id="question-input"><%=question%></div>
+   
+    <div class="form-group padding-top" itemsn="<%=itemsn%>">
+    
+    <%
+    if (type == 'textbox') {
+	for (var i=0; parts!=null && i<parts.length; i++) {
+		var partsn = parts[i].partsn;
+	%>
+	<div class="form-horizontal">
+      	<div class="form-group" itemsn="<%=itemsn%>">
+      	<div class="col-xs-3">
+      	<label><h4><strong>Answer: </strong></h4><label>
+      	</div>
+      	<div class="col-xs-9">
+      		<input type="text" class="form-control answer-text-input" partsn="<%=partsn%>" value="<%=parts[i].ansText%>"/>
+      	</div>
+      	</div>
+      </div>				    
+    <%
+    }//end for
+    } // end if
+    %>
+    
+    
+    <%
+    if (type == 'textarea') {
+    %>
+   	<div class="form-horizontal">
+      	<div class="form-group" itemsn="<%=itemsn%>">
+      	<div class="col-xs-7">
+      	<label><h4><strong>Number of Row [1 to 99]: </strong></h4><label>
+      	</div>
+      	<div class="col-xs-5">
+      		<input type="text" class="form-control textarea-row" value="<%=row%>" pattern="\d*" min="1" max="99" maxlength="2"/>
+      	</div>
+      	</div>
+      </div>
+    <%
+   	} // end if
+   	%>
+    
+    <%
+    if (type == 'radio' || type == 'checkbox') {
+    %>
+      <div class="form-horizontal">
+      	<div class="form-group" itemsn="<%=itemsn%>">
+      	<div class="col-xs-4">
+      	<label><h4><strong><%=(type == 'radio' || type == 'checkbox')? 'Field Layout: ':''%></strong></h4><label>
+      	</div>
+      	<div class="col-xs-8">
+      		<select class="form-control optionColumn">
+      			<option value="1" <%=(col==1)?'selected="selected"':''%>>One Column</option>
+      			<option value="2" <%=(col==2)?'selected="selected"':''%>>Two Column</option>
+      			<option value="3" <%=(col==3)?'selected="selected"':''%>>Three Column</option>
+      			<option value="4" <%=(col==4)?'selected="selected"':''%>>Four Column</option>
+      			<option value="5" <%=(col==5)?'selected="selected"':''%>>Five Column</option>
+      		</select>
+      	</div>
+      	</div>
+      </div>
+   	<%
+   	} // end if
+   	%>
+    
+    <label for="question"><h4><strong><%=(type == 'radio' || type == 'checkbox' || type == 'truefalse')? 'Choice: ':''%></strong></h4></label>
+    <div class="nano" style="height:150px;">
+	<div class="nano-content">
+    <ul id="parts" class="list-unstyled connectedSortable">
+	<%
+	for (var i=0; parts!=null && i<parts.length; i++) {
+		var partsn = parts[i].partsn;
+		if (type == 'radio' || type == 'checkbox' || type == 'truefalse') {
+	%>
+	<li class="part margin-right" partsn="<%=partsn%>">
+		<table>
+			<tr>
+				<td class="td-padding">
+					<input type="<%=(type=='truefalse')?'radio':type%>" class="answer-input" id="<%=parts[i].partsn%>" value="<%=parts[i].partsn%>" partsn="<%=parts[i].partsn%>" itemsn="<%=itemsn%>" <%=(parts[i].ans == true)?'checked="checked"':''%>/>
+				</td>
+				<td class="td-padding">
+					<button type="button" class="btn btn-link move-part"><i class="fa fa-arrows fa-lg"></i></button>
+				</td>
+				<td style="width:90%" class="td-padding">
+					<input type="text" class="form-control part-input" value="<%=parts[i].value%>" partsn="<%=partsn%>" <%=(type == 'truefalse')?'readonly="readonly"':''%>/>
+				</td>
+				<td class="td-padding">
+					<button type="button" class="btn btn-link padding-zero upload-part-photo" partsn="<%=partsn%>"><i class="fa fa-file-photo-o fa-lg"></i></button>
+	    			<input type="file" class="filePartInput hide" partsn="<%=partsn%>"/>
+				</td>
+				<td class="td-padding">
+					<button type="button" class="btn btn-link remove-part" partsn="<%=partsn%>"><i class="fa fa-trash-o fa-lg"></i></button>
+				</td>
+				<td class="td-padding">
 					<%
-				    if (!(type == 'imageOnly' || type == 'textOnly')) {
-				    %>
-				    <label for="question"><h4><strong>Question: </strong></h4></label>
-				    <div class="btn-group pull-right padding-bottom">
-                          <button type="button" class="btn btn-default uploadItemPhoto"><i class="fa fa-file-photo-o"></i></button>
-                          <input type="file" class="fileItemInput hide" itemsn="<%=itemsn%>"/>
-                          <button type="button" class="btn btn-default action-remove-item" itemsn="<%=itemsn%>"><i class="fa fa-trash-o"></i></button>
-                    </div>
-				   
-				   <div class="padding" style="width: 100%; height: 100px;border:1px solid #000;overflow:auto;" contenteditable="true" id="question-input"><%=question%></div>
-				   
-				    <div class="form-group padding-top" itemsn="<%=itemsn%>">
-				    
-				    <%
-				    if (type == 'textarea') {
-				    %>
-				   	<div class="form-horizontal">
-                      	<div class="form-group" itemsn="<%=itemsn%>">
-                      	<div class="col-xs-7">
-                      	<label><h4><strong>Number of Row [1 to 99]: </strong></h4><label>
-                      	</div>
-                      	<div class="col-xs-5">
-                      		<input type="text" class="form-control textarea-row" value="<%=row%>" pattern="\d*" min="1" max="99" maxlength="2"/>
-                      	</div>
-                      	</div>
-                      </div>
-				    <%
-				   	} // end if
-				   	%>
-				    
-				    <%
-				    if (type == 'radio' || type == 'checkbox') {
-				    %>
-                      <div class="form-horizontal">
-                      	<div class="form-group" itemsn="<%=itemsn%>">
-                      	<div class="col-xs-4">
-                      	<label><h4><strong><%=(type == 'radio' || type == 'checkbox')? 'Field Layout: ':''%></strong></h4><label>
-                      	</div>
-                      	<div class="col-xs-8">
-                      		<select class="form-control optionColumn">
-                      			<option value="1" <%=(col==1)?'selected="selected"':''%>>One Column</option>
-                      			<option value="2" <%=(col==2)?'selected="selected"':''%>>Two Column</option>
-                      			<option value="3" <%=(col==3)?'selected="selected"':''%>>Three Column</option>
-                      			<option value="4" <%=(col==4)?'selected="selected"':''%>>Four Column</option>
-                      			<option value="5" <%=(col==5)?'selected="selected"':''%>>Five Column</option>
-                      		</select>
-                      	</div>
-                      	</div>
-                      </div>
-				   	<%
-				   	} // end if
-				   	%>
-				    
-				    <label for="question"><h4><strong><%=(type == 'radio' || type == 'checkbox')? 'Choice: ':''%></strong></h4></label>
-				    <div class="nano" style="height:150px;">
-					<div class="nano-content">
-				    <ul id="parts" class="list-unstyled connectedSortable">
-					<%
-					for (var i=0; parts!=null && i<parts.length; i++) {
-						var partsn = parts[i].partsn;
-						if (type == 'radio' || type == 'checkbox') {
+					if (parts[i].ans == true) {
 					%>
-					<li class="part margin-right" partsn="<%=partsn%>">
-						<div class="row margin-bottom part">
-					    	<div class="col-xs-1 padding-right-zero">
-					    		<button type="button" class="btn btn-link move-part padding-zero"><i class="fa fa-arrows fa-lg"></i></button>
-					    	</div>
-					    	<div class="col-xs-9">
-					    		<input type="text" class="form-control part-input" value="<%=parts[i].value%>" partsn="<%=partsn%>"/>
-					    	</div>
-					    	<div class="col-xs-1 padding-left-zero padding-right-zero pull-center">
-					    		<button type="button" class="btn btn-link padding-zero upload-part-photo" partsn="<%=partsn%>"><i class="fa fa-file-photo-o fa-lg"></i></button>
-					    		<input type="file" class="filePartInput hide" partsn="<%=partsn%>"/>
-					    	</div>
-					    	<div class="col-xs-1 padding-left-zero padding-right-zero pull-center">
-					    		<button type="button" class="btn btn-link remove-part padding-zero" partsn="<%=partsn%>"><i class="fa fa-trash-o fa-lg"></i></button>
-					    	</div>
-					    </div>
-					</li>
+					<i class="fa fa-check-square fa-2x" data-toggle="tooltip" data-placement="left" title="This is the answer"></i>
 					<%
-						}// end if
-					} // end for
+					}
 					%>
-					</ul>
-					</div>
-					</div>
-					<%
-					if (type == 'radio' || type == 'checkbox') {
-					%>
-					<div class="row margin-bottom">
-				    	<div class="col-xs-12">
-				    	<button type="button" id="addNewOption" class="btn btn-link" itemsn="<%=itemsn%>"><i class="fa fa-plus-circle fa-lg"></i> Add New Option</button>
-				    	</div>
-				    </div>
-				    <%
-				    } // end if
-				    %>
-				    <%
-				    } else if (type == 'textOnly') { // imageOnly or textOnly
-				    %>
-				    
-				    <div class="btn-group pull-right padding">
-                          <button type="button" class="btn btn-default action-remove-item" itemsn="<%=itemsn%>"><i class="fa fa-trash-o"></i></button>
-                    </div>
-                    <div class="padding" align="center">
-                          	<%
-							for (var j=0; parts!=null &&  j<parts.length; j++) {
-							%>
-							<div class="text">
-								<textarea class="form-control part-input" id="<%=parts[j].partsn%>" partsn="<%=parts[j].partsn%>" row="5"><%=parts[j].value%></textarea> 
-							</div>
-							
-							<%
-							} // end for
-							%>
-                    </div>
-				    
-				    <%
-				    } else if (type == 'imageOnly') { // imageOnly or textOnly
-				    %>
-				    <div class="btn-group pull-right padding">
-                          <button type="button" class="btn btn-default action-remove-item" itemsn="<%=itemsn%>"><i class="fa fa-trash-o"></i></button>
-                    </div>
-                    <div class="padding" align="center">
-                    	  <button type="button" class="btn btn-app uploadItemPhoto"><i class="fa fa-file-photo-o fa-5x"></i> Upload Photo</button>
-                          <input type="file" class="fileItemInput hide" itemsn="<%=itemsn%>"/>
-                    </div>
-                    <%
-				    } // end if
-				    %>
-				 </div>
-				
-				    
+				</td>
+			</tr>
+		</table>
+	</li>
+	<%
+		}// end if
+	} // end for
+	%>
+	</ul>
+	</div>
+	</div>
+	<%
+	if (type == 'radio' || type == 'checkbox') {
+	%>
+	<div class="row margin-bottom">
+    	<div class="col-xs-12">
+    	<button type="button" id="addNewOption" class="btn btn-link" itemsn="<%=itemsn%>"><i class="fa fa-plus-circle fa-lg"></i> Add New Option</button>
+    	</div>
+    </div>
+    <%
+    } // end if
+    %>
+    <%
+    } else if (type == 'textOnly') { // imageOnly or textOnly
+    %>
+    
+    <div class="btn-group pull-right padding">
+          <button type="button" class="btn btn-default action-remove-item" itemsn="<%=itemsn%>"><i class="fa fa-trash-o"></i></button>
+    </div>
+    <div class="padding" align="center">
+          	<%
+			for (var j=0; parts!=null &&  j<parts.length; j++) {
+			%>
+			<div class="text">
+				<textarea class="form-control part-input" id="<%=parts[j].partsn%>" partsn="<%=parts[j].partsn%>" row="5"><%=parts[j].value%></textarea> 
+			</div>
+			
+			<%
+			} // end for
+			%>
+    </div>
+    
+    <%
+    } else if (type == 'imageOnly') { // imageOnly or textOnly
+    %>
+    <div class="btn-group pull-right padding">
+          <button type="button" class="btn btn-default action-remove-item" itemsn="<%=itemsn%>"><i class="fa fa-trash-o"></i></button>
+    </div>
+    <div class="padding" align="center">
+    	  <button type="button" class="btn btn-app uploadItemPhoto"><i class="fa fa-file-photo-o fa-5x"></i> Upload Photo</button>
+          <input type="file" class="fileItemInput hide" itemsn="<%=itemsn%>"/>
+    </div>
+    <%
+    } // end if
+    %>
+ </div>
+
+    

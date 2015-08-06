@@ -32,7 +32,7 @@
 							} // end if
 							%>
 								<td width="<%=100/col%>%" valign="top" style="padding:5px;">
-								<input type="<%=type%>" class="answer-input" id="<%=parts[i].partsn%>" value="<%=parts[i].partsn%>" partsn="<%=parts[i].partsn%>" <%=(parts[i].ans == true)?'checked="checked"':''%>/> 
+								<input type="<%=(type=='truefalse')?'radio':type%>" class="answer-input" id="<%=parts[i].partsn%>" value="<%=parts[i].partsn%>" partsn="<%=parts[i].partsn%>" itemsn="<%=itemsn%>" <%=(parts[i].ans == true)?'checked="checked"':''%>/> 
 								<%=parts[i].value%>
 								
 								<%
