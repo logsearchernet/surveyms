@@ -15,6 +15,8 @@ $(document).ready(function(){
 		   console.log('proname='+proname)
 		   updateTitle(proname, jsonData);
 		   renderJsonData(jsonData, currentPageIndex);
+		   $('textarea#title-input').val('').val(proname);
+		   $('textarea#title-input').focus();
 	});
 	$(document).on("change", "input#randomized-question-input" , function(e) {
 		if(this.checked) {
@@ -162,8 +164,12 @@ $(document).ready(function(){
 	$(document).on("click", "button.action-remove-item" , function(e) {
 		
 		var itemsn = $(this).attr('itemsn');
-		removeItem(itemsn, jsonData, currentPageIndex);
-		renderJsonData(jsonData, currentPageIndex);
+		$('li[itemsn="'+ itemsn +'"').fadeOut('slow');
+		setTimeout(function() {
+			removeItem(itemsn, jsonData, currentPageIndex);
+			renderJsonData(jsonData, currentPageIndex);
+		}, 5000);
+		
 		activaTab('tab_1');
 	});
 	
